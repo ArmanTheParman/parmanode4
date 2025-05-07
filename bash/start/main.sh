@@ -1,5 +1,12 @@
 function main {                 debug_startup "Pause beggining of main"
 
+install_docker || sww
+restart_after_docker_install
+
+if ! docker ps >/dev/null ; then echo "Please make sure Docker is running first.$(enter_continue_button)"
+return 1
+fi
+
 #check files and directories exist
 [[ -e $HOME/parman_programs ]] || mkdir -p $HOME/parman_programs
 [[ -e $HOME/.parmanode4 ]]     || mkdir -p $HOME/.parmanode4
@@ -25,6 +32,9 @@ intsall_brew || sww
 install_git  || sww
 install_curl || sww
 gsed_symlink || sww
+install_python || sww
+install_pip || sww
+install_websockets || sww
 bash_version_check || sww
 install_parmashedll || sww
 

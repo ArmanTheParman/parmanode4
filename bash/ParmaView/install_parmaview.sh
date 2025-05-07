@@ -1,17 +1,6 @@
 function install_parmaview {
-yesorno "ParmaView is a Docker container with the purpose of orchestrating a
-    communication channel to a browser interface for Parmanode.
 
-    Install?" || return 1
-clear
 
-if ! which docker > $dn ; then announce "Please install Docker from the Parmanode install menu first."
-return 1
-fi
-
-if ! docker ps >$dn ; then announce "Please make sure Docker is running first."
-return 1
-fi
 
 if docker ps | grep -q parmaview ; then 
 announce "The parmaview container is already running."
