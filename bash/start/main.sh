@@ -4,6 +4,7 @@ install_docker || sww
 restart_after_docker_install
 
 if ! docker ps >/dev/null ; then echo "Please make sure Docker is running first.$(enter_continue_button)"
+signal_wait enter
 return 1
 fi
 
