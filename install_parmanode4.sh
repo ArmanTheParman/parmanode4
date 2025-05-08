@@ -2,16 +2,24 @@
 
 if [[ $1 == x ]] ; then set -x ; fi
 
-heading "Install Parmanode..."
+echo -e "
+############################################################
 
-body "Good call on installing Parmanode. This installation will add a few directories and files \
-here and there, and also install some programs that are necessary for Parmanode to function. You \
-will be asked to confirm on the next page.
+  Good call on installing Parmanode. This installation 
+  will add a few directories and files here and there, 
+  and also install some programs that are necessary for 
+  Parmanode to function. You will be asked to confirm 
+  on the next page.
 
-If Parmanode3 is installed on your machine, Parmanode4 will detect that, and any programs you have \
-installed with it, and migrate them across.
+  If Parmanode3 is installed on your machine, Parmanode4
+  will detect that, and any programs you have installed 
+  with it, and migrate them across.
+    
+  Once that is done, Parmanode4 will Remove Parmanode3 
+  for you.
 
-Once that is done, Parmanode4 will Remove Parmanode3 for you."
+############################################################
+"
 
 choose "continue" "exit"
 
@@ -63,3 +71,4 @@ e2fsprogs
 tune2fs
 fuse3
 libfuse2
+EOF
