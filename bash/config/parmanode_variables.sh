@@ -2,6 +2,8 @@ function parmanode_variables {
 
 #system
 export dn=/dev/null
+export bashversionmajor=$(bash --version | head -n1 | cut -d \. -f 1 | grep -Eo '[0-9]+')
+export bashversion=$(bash --version | head -n1 | awk '{print $4}' | sed -nE 's/.*([0-9]+\.[0-9]+\.[0-9]+).*/\1/p')
 
 #OS specific
 if [[ $(uname) == "Linux" ]] ; then

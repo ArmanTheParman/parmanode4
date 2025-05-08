@@ -1,6 +1,5 @@
 function colours {
-#colours don't work on Mac bash old version
-if [[ $bashV_major -gt 4 ]] ; then
+
 export black="\033[30m"
 export red="\033[31m"
 export green="\033[32m"
@@ -11,8 +10,6 @@ export cyan="\033[36m"
 export white="\033[37m"
 export reset="\033[0m"
 export orange="\033[1m\033[38;2;255;145;0m"
-    if [[ $(uname) == Darwin ]] ; then export orange="$yellow" 
-    fi
 export pink="\033[38;2;255;0;255m"
 
 export bright_black="\033[90m" ; export grey="\033[90m"
@@ -26,7 +23,7 @@ export bright_cyan="\033[96m"
 export bright_white="\033[97m"
 export blinkon="\033[5m"
 export blinkoff="\033[0m"
-colour_check
-echo -e "$orange"
+
+if [[ $(uname) == Darwin ]] ; then export orange="$yellow" 
 fi
 }
