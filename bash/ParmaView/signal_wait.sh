@@ -10,6 +10,6 @@ return 0
 function enter_continue_button {
 mkdir -p /tmp/parmanode_signals
 rm /tmp/parmanode_signals/enter 2>/dev/null
-#render_button enter_continue 
-#send html to websocket -- code reqeusts delete 'enter signal file' when clicked
+#to do ; render_button enter_continue 
+#to do ; send html to websocket -- code reqeusts delete 'enter signal file' when clicked
 }
