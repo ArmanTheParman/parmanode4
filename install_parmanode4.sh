@@ -1,8 +1,12 @@
 #!/usr/bin/env bash
 
 if [[ $1 == x ]] ; then set -x ; fi
+#bash version
+[[ $cgi == "true" ]] || export bashV_major=$(bash --version | head -n1 | cut -d \. -f 1 | grep -Eo '[0-9]+')
 
-echo -e "
+printf "$orange
+############################################################$blue
+                  P A R M A N O D E 4$orange
 ############################################################
 
   Good call on installing Parmanode. This installation 
@@ -16,12 +20,14 @@ echo -e "
   with it, and migrate them across.
     
   Once that is done, Parmanode4 will Remove Parmanode3 
-  for you.
+  for you. If you ever lose your mind and uninstall 
+  Parmanode4, it will leave your machine nice and clean.
 
 ############################################################
+  Hit <enter> to continue or 'q' and <enter> to quit
+############################################################
 "
-
-choose "continue" "exit"
+read
 
 #check files and directories exist
 [[ -e $HOME/parman_programs ]]                || mkdir -p $HOME/parman_programs
