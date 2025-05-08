@@ -1,12 +1,6 @@
 function install_parmaview {
 
 
-
-if docker ps | grep -q parmaview ; then 
-announce "The parmaview container is already running."
-return 1
-fi
-
 #CGI
 sudo systemctl disable fcgiwrap >$dn 2>&1 #in case it is running (needs modification)
 sudo mkdir -p /etc/systemd/system/fcgiwrap.service.d
@@ -28,11 +22,6 @@ sudo setfacl -R -d -m u:www-data:rX /opt/parmanode #uppercase X for directories 
 #Nginx
 install_nginx
 make_parmaview_nginx_conf || return 1
-#Docker
-please_wait
-parmaview_build || { enter_continue && announce "build failed" && return 1 ; }
-parmaview_run
-parmanode_in_parmaview
 #Finish
 installed_config_add "parmaview-end"
 if [[ $1 != silent ]] ; then
