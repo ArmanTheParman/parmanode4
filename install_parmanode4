@@ -538,6 +538,14 @@ echo "\n\n\n    SUCCESS!\n\n\nPlease reboot before using Parmanode."
 sleep 1.5
 exit
 
+
+
+#
+#
+#Need to check if this is still needed...
+#
+#
+
 function install_xcode_for_macs {
 while true ; do #loop 1
 if xcode-select -p >/dev/null 2>&1 ; then break ; fi
