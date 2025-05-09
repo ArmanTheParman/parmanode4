@@ -24,7 +24,8 @@ fi
 #parmanode4 dirs
 export pp=$HOME/parman_programs
 export dp=$HOME/.parmanode4
-export hp=$HOME/parmanode4
+export hp=$HOME/parmanode4_apps
+export hpa=$hp
 export pn=$pp/parmanode4
 export pd=$parmanode_drive
 

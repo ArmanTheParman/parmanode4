@@ -449,6 +449,7 @@ fi
 function parmanode_directories {
 #Check files and directories exist
 mkdir -p $HOME/parman_programs
+mkdir -p $HOME/parmanode4_apps
 mkdir -p $HOME/.parmanode4
 touch    $HOME/.parmanode4/installed.conf
 touch    $HOME/.parmanode4/parmanode.conf
@@ -477,10 +478,12 @@ check_docker
 install_homebrew
 install_homebrew_packages
 install_linux_packages
+gsed_symlink 
 parmanode_directories
 configure_git 
 clone_parmanode
-gsed_symlink 
+
+#migrate_from_parmanode3
 
 
 echo "\n\n\n    SUCCESS!\n\n\nPlease reboot before using Parmanode."
