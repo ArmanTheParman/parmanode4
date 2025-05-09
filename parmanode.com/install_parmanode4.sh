@@ -33,7 +33,7 @@ if [[ $(uname) == Darwin ]] ; then export orange="$yellow"
 fi
 }
 
-function check_temp {
+function check_tmp {
 if [[ -d "/tmp" ]] ; then
     export tmp="/tmp"
 elif [[ -d "$HOME/tmp" ]] ; then
@@ -413,6 +413,9 @@ done
 }
 
 function install_homebrew_packages {
+
+if ! [[ $(uname) == "Darwin" ]] ; then return 0 ; fi
+
 brew update
 
 brew install git
@@ -427,6 +430,9 @@ brew install gsed
 }
 
 function install_linux_packages {
+
+if [[ $(uname) == "Darwin" ]] ; then return 0 ; fi
+
 sudo apt-get update -y
 sudo apt-get install -y curl python3 pip3 socat vim nano ssh || sww
 sudo apt-get install -y net-tools git procps gnupg tmux x11-apps ca-certificates netcat-traditional jq || sww
@@ -452,8 +458,14 @@ touch    $HOME/.parmanode4/temp
 return 0
 }
 
+function  configure_git {
+    if ! git config --global user.email ; then git config --global user.email parman@parmanode.com ; fi
+    if ! git config --global user.name ; then git config --global user.name parmanode_user ; fi
+}
+
 function clone_parmanode {
 git clone https://github.com/armantheparman/parmanode4.git $HOME/parman_programs/parmanode4
+cd $HOME/parman_programs/parmanode4 && git config pull.rebase false >/dev/null 2>&1
 }
 
 
@@ -465,8 +477,8 @@ check_docker
 install_homebrew
 install_homebrew_packages
 install_linux_packages
-install_git
 parmanode_directories
+configure_git 
 clone_parmanode
 gsed_symlink 
 
