@@ -7,12 +7,23 @@ uninstall_apps || return 1
 sudo rm -rf $dp
 sudo rm -rf $pn4
 
-#remove bind mount
-sudo unmount $macprefix/var/www/parmanode_cgi 
+#uninstall_cgi
+    sudo umount $wwwparmaviewdir && sudo rm -rf $wwwparmaviewdir
+    sudo rm -rf $parmaviewnginx
+    [[ $(uname) == "Darwin" ]] || { 
+        sudo systemctl restart nginx 
+        sudo systemctl disable fcgiwrap >$dn 
+        sudo rm -rf /etc/systemd/system/fcgiwrap.service.d 
+        sudo systemctl daemon-reload
+    }
 
 #clean up bashrc/zshrc
 #unmount
 #clearn up crontab
+
+#stop connections
+tmux kill-session -t ws1
+
 
 success "Parmanode4 has been uninstalled"
 return 0

@@ -19,19 +19,18 @@ n) return 1 ;;
 esac
 done
 
-export wwwdir="$macprefix/var/www/parmanode_cgi"
-export cginginx="macprefix/etc/nginx.conf.d/parmaview_cgi.conf"
-
 #stop connections
 tmux kill-session -t ws1
 #uninstall_cgi
-    sudo umount $wwwparmaviewdir
+    sudo umount $wwwparmaviewdir && sudo rm -rf $wwwparmaviewdir
     sudo rm -rf $parmaviewnginx
-    sudo umount /opt/parmanode
-    sudo systemctl restart nginx
-    sudo systemctl disable fcgiwrap >$dn
-    sudo rm -rf /etc/systemd/system/fcgiwrap.service.d
-    sudo systemctl daemon-reload
+    [[ $(uname) == "Darwin" ]] || { 
+        sudo systemctl restart nginx 
+        sudo systemctl disable fcgiwrap >$dn 
+        sudo rm -rf /etc/systemd/system/fcgiwrap.service.d 
+        sudo systemctl daemon-reload
+    }
+
 installed_config_remove "parmaview"
 success "ParmaView" "being uninstalled"
 }

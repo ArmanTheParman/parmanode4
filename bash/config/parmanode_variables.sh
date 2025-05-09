@@ -52,4 +52,7 @@ export nkd=$dp/.nostr_keys
 
 #Nginx
 export parmaviewnginx="$macprefix/etc/nginx/conf.d/parmaview.conf"
+
+#Parmaview
+export wwwparmaviewdir="$macprefix/var/www/parmaview"
 }

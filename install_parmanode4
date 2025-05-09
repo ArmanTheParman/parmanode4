@@ -1,7 +1,11 @@
-return 0
-#To be stored on parmanode.com
-
 #!/bin/bash
+#accessed from parmanode.com with:
+# curl https://parmanode.com/install_parmanode4 | bash
+
+function sww {
+echo -e "Something went wrong \n$1\n\nHit <enter> to continue\n"
+read
+}
 
 function colours {
 
@@ -44,10 +48,6 @@ else
 fi
 }
 
-function sww {
-echo -e "Something went wrong \n$1\n\nHit <enter> to continue\n"
-read
-}
 
 function check_parmanode_exists {
 if [[ -d $HOME/.parmanode4 ]] ; then
@@ -321,46 +321,11 @@ echo "See new text document on Desktop."
 fi
 }
 
-check_brew_macs
-
-function install_xcode_for_macs {
-while true ; do #loop 1
-if xcode-select -p >/dev/null 2>&1 ; then break ; fi
-
-#Install cldts
-clear
-sudo -k
-echo "
-########################################################################################
-   
-   Command Line Developer Tools is needed.
-
-   There will be a pop up question which you'll need to respond to (It may actually
-   be minimised, so look at the task bar below if you don't see it). The install
-   estimate will initially say some HOURS, but ignore that, it's wrong.
-
-   Once Command Line Tools have successfully installed, enter your computer password,
-   then <enter> to continue.
-
-   Hit <enter> ONLY after the pop up has finished installeding, and not before, or 
-   your computer will melt.
- 
-   If you want to abandon, you can hit <control> c now.
-
-####################################################################################### 
-"
-xcode-select --install
-
-sudo sleep 0.1break
-done #ends loop 1
-}
-
-
-
 
 function install_homebrew {
 
 if ! [[ $(uname) == "Darwin" ]] ; then return 0 ; fi
+if which brew >/dev/null ; then return 0 ; fi
 
 clear
 while true ; do
@@ -427,6 +392,21 @@ brew install tmux
 brew install tor
 brew install gnu-sed
 brew install gsed
+brew install nginx
+brew install fcgiwrap
+brew install autoconf automake fcgi
+
+#build fastcgi
+which fcgiwrap >/dev/null || {
+git clone https://github.com/gnosek/fcgiwrap.git $tmp/fcgiwrap
+cd $tmp/fcgiwrap
+autoreconf -i
+./configure
+make
+sudo make install
+grep -q "/usr/local/sbin" <<<$PATH || echo 'export PATH="/usr/local/sbin:$PATH"' >> ~/.zshrc
+source ~/.zshrc
+}
 }
 
 function install_linux_packages {
@@ -434,9 +414,10 @@ function install_linux_packages {
 if [[ $(uname) == "Darwin" ]] ; then return 0 ; fi
 
 sudo apt-get update -y
-sudo apt-get install -y curl python3 pip3 socat vim nano ssh || sww
-sudo apt-get install -y net-tools git procps gnupg tmux x11-apps ca-certificates netcat-traditional jq || sww
-sudo apt-get install -y unzip tor ufw mdadm e2fsprogs tune2fs fuse3 libfuse2 || sww
+sudo apt-get install -y nginx-full python3 pip3 socat vim nano ssh || sww
+sudo apt-get install -y net-tools git procps tmux x11-apps netcat-traditional jq || sww
+sudo apt-get install -y fcgiwrap unzip tor ufw mdadm e2fsprogs tune2fs fuse3 libfuse2 || sww
+#sudo  apt-get install-y curl gnupg ca-certificates #installed with docker already
 { pip3 install websockets || pip3 install websockets --break-system-packages ; } || sww
 }
 
@@ -469,6 +450,71 @@ git clone https://github.com/armantheparman/parmanode4.git $HOME/parman_programs
 cd $HOME/parman_programs/parmanode4 && git config pull.rebase false >/dev/null 2>&1
 }
 
+function install_parmaview {
+
+if [[ $(uname) == "Darwin" ]] ; then return 0 ; fi
+
+#CGI
+sudo systemctl disable fcgiwrap >$dn 2>&1 #in case it is running (needs modification)
+sudo mkdir -p /etc/systemd/system/fcgiwrap.service.d
+cat<<EOS | sudo tee /etc/systemd/system/fcgiwrap.service.d/override.conf >$dn 2>&1
+[Service]
+User=$USER
+Group=$USER
+EOS
+sudo systemctl enable --now fcgiwrap
+
+
+#Nginx
+if ! [[ $silent == "true" ]] ; then
+netstat -tuln 2>$dn | grep -q :58000 && { sww "Port 58000 is already in use. Proceed with caution." ; }
+fi
+
+    #SCRIPT_FILENAME neessary for fcgiwrap to know what to execute
+    #Other variables are for the script
+
+cat <<EOF | sudo tee $parmaviewnginx >$dn 2>&1
+server {
+    #version 1
+    listen 58000;
+    server_name localhost parmanodl.local parmadrive.local parmanode.local ;
+    root $wwwparmaviewdir;
+    index index.html;
+
+    location ~ /cgi-bin/.*\.sh {
+        fastcgi_split_path_info ^(/.*\.sh)(/.*)?$;
+        include fastcgi_params;
+        fastcgi_pass unix:/var/run/fcgiwrap.socket;
+        fastcgi_param SCRIPT_FILENAME \$document_root\$fastcgi_script_name;
+        fastcgi_param PATH_INFO \$fastcgi_path_info;
+        fastcgi_param HOME $HOME;
+    }
+
+    location /ws/ {
+        proxy_pass http://127.0.0.1:58001;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade \$http_upgrade;
+        proxy_set_header Connection "upgrade";
+        proxy_set_header Host \$host;
+
+    }
+
+    location / {
+        index index.html;
+        try_files \$uri \$uri/ =404;
+    }
+}
+EOF
+sudo systemctl restart nginx
+
+#Mount to directory accessible by www-data (nginx)
+sudo mkdir -p /var/www/parmaview
+sudo mount --bind $HOME/parman_programs/parmanode4/parmaview/ /var/www/parmaview || sww "Mounting cgi-bin failed."
+sudo mkdir -p /run/parmanode
+sudo chmod 2771 /run/parmanode
+sudo chown parman:www-data /run/parmanode
+
+}
 
 colours
 check_parmanode_exists
@@ -482,6 +528,8 @@ gsed_symlink
 parmanode_directories
 configure_git 
 clone_parmanode
+install_parmaview #set up for Linux only at this stage
+
 
 #migrate_from_parmanode3
 
@@ -490,3 +538,34 @@ echo "\n\n\n    SUCCESS!\n\n\nPlease reboot before using Parmanode."
 sleep 1.5
 exit
 
+function install_xcode_for_macs {
+while true ; do #loop 1
+if xcode-select -p >/dev/null 2>&1 ; then break ; fi
+
+#Install cldts
+clear
+sudo -k
+echo "
+########################################################################################
+   
+   Command Line Developer Tools is needed.
+
+   There will be a pop up question which you'll need to respond to (It may actually
+   be minimised, so look at the task bar below if you don't see it). The install
+   estimate will initially say some HOURS, but ignore that, it's wrong.
+
+   Once Command Line Tools have successfully installed, enter your computer password,
+   then <enter> to continue.
+
+   Hit <enter> ONLY after the pop up has finished installeding, and not before, or 
+   your computer will melt.
+ 
+   If you want to abandon, you can hit <control> c now.
+
+####################################################################################### 
+"
+xcode-select --install
+
+sudo sleep 0.1break
+done #ends loop 1
+}
