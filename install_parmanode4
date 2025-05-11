@@ -598,13 +598,13 @@ sudo systemctl status nginx >$dn 2>&1 || swwtest "nginx not running"
 return 0
 }
 
-
+which docker >/dev/null || export reboot="\r    Please reboot before using Parmanode.\n\n\n"
 do_install
 test_parmanode4_install
 
     if [[ $tests_all_passed != "false" ]] ; then
         clear
-        echo -e "\n\n\n\r    SUCCESS! \n\n\n\r    Please reboot before using Parmanode.\n\n\n"
+        echo -e "\n\n\n\r    SUCCESS! \n\n\n$reboot"
         sleep 1.5
     else
         echo -e "\n\n\n\r    Install finished, but at least one thing went wrong.\n\n\n"
