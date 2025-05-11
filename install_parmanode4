@@ -598,9 +598,14 @@ sudo test -f $parmaviewnginx || swwtest "parmaviewnginx file not detected"
 sudo systemctl status nginx >$dn 2>&1 || swwtest "nginx not running"
 return 0
 }
+##############################################################################################################################
+#run it!
+##############################################################################################################################
 
 which docker >/dev/null || export reboot="\r    Please reboot before using Parmanode.\n\n\n"
+
 do_install
+
 test_parmanode4_install
 
     if [[ $tests_all_passed != "false" ]] ; then
@@ -613,3 +618,5 @@ test_parmanode4_install
     fi
 
 exit
+
+##############################################################################################################################
