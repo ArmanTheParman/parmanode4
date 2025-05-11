@@ -10,6 +10,8 @@ test -d $HOME/parman_programs/parmanode4 || { echo -e "\nParmanode4 wasn't found
 
 yesorno "Are you sure you want to uninstall Parmanode4? 
     You will first have the option to remove installed programs" || return 1
+clear
+echo "Please wait..."
 
 #uninstall_apps || return 1
 
