@@ -129,13 +129,10 @@ if [[ $(uname) == "Darwin" ]] ; then
     read
     exit 0
     fi
-    
     install_docker_mac
 
-if [[ $(uname) == "Linux" ]] ; then
-
+elif [[ $(uname) == "Linux" ]] ; then
     install_docker_linux
-
 fi
 
 }
