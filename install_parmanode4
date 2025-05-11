@@ -99,7 +99,7 @@ case $choice in q|Q) exit ;; esac
 
 function check_docker {
 
-if which docker >/dev/null && return 0
+which docker >/dev/null && return 0
 
 if [[ $(uname) == "Darwin" ]] ; then
 
