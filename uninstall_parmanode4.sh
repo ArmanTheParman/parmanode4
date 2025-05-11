@@ -1,7 +1,9 @@
 function uninstal_parmanode4 {
 
-source $HOME/parman_programs/parmanode4/src/config/parmanode_variables.sh 2>/dev/null
-parmanode_variables
+#source files
+for file in $HOME/parman_programs/parmanode4/src/**/*.sh ; do
+source $file
+done
 
 test -d $HOME/parman_programs/parmanode4 || { echo -e "\nParmanode4 wasn't found.\n" ; sleep 1.5 ; exit ; }
 
