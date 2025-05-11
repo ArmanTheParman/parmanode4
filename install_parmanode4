@@ -412,7 +412,7 @@ function install_linux_packages {
 if [[ $(uname) == "Darwin" ]] ; then return 0 ; fi
 
 sudo apt-get update -y
-sudo apt-get install -y nginx-full python3 pip3 socat vim nano ssh || sww
+sudo apt-get install -y nginx-full python3 python3-pip socat vim nano ssh || sww
 sudo apt-get install -y net-tools git procps tmux x11-apps netcat-traditional jq || sww
 sudo apt-get install -y fcgiwrap unzip tor ufw mdadm e2fsprogs tune2fs fuse3 libfuse2 || sww
 #sudo  apt-get install-y curl gnupg ca-certificates #installed with docker already
