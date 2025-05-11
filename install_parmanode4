@@ -533,7 +533,7 @@ install_parmaview #set up for Linux only at this stage
 #migrate_from_parmanode3
 
 
-echo "\n\n\n    SUCCESS!\n\n\nPlease reboot before using Parmanode."
+echo -e "\n\n\n    SUCCESS!\n\n\nPlease reboot before using Parmanode."
 sleep 1.5
 exit
 
