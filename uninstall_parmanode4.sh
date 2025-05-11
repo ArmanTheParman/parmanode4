@@ -22,10 +22,10 @@ sudo test -L /usr/bin/gsed && sudo rm /usr/bin/gsed
     sudo rm -rf $parmaviewnginx 2>$dn
 
     if [[ $(uname) == "Linux" ]] ; then 
-        sudo rm -rf /etc/systemd/system/fcgiwrap.service.d 
-        sudo systemctl disable fcgiwrap >$dn 
-        sudo systemctl daemon-reload
-        sudo systemctl restart nginx 
+        sudo rm -rf /etc/systemd/system/fcgiwrap.service.d 2>$dn
+        sudo systemctl disable fcgiwrap >$dn 2>&1
+        sudo systemctl daemon-reload >$dn 2>&1
+        sudo systemctl restart nginx >$dn 2>&1
     fi
         
 #clean up bashrc/zshrc
