@@ -581,8 +581,8 @@ which unzip >$dn || swwtest "unzip not detected."
 which tor >$dn || swwtest "tor not detected."
 which gsed >$dn || swwtest "gsed not detected."
 sudo which nginx >$dn || swwtest "nginx not detected."
-which python3 || swwtest "Python3 not detected"
-which pip3 || swwtest "pip3 not detected"
+which python3 >$dn || swwtest "Python3 not detected"
+which pip3 >$dn || swwtest "pip3 not detected"
 pip3 list | grep -q websockets || swwtest "websockets not detected in pip3 list"
 
 [[ $(uname) == "Linux" ]] && { 
