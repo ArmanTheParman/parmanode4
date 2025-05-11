@@ -2,6 +2,19 @@
 #accessed from parmanode.com with:
 # curl https://parmanode.com/install_parmanode4 | bash
 
+#GLOBAL VARIABLES...
+export dn=/dev/null
+
+if [[ -d "/tmp" ]] ; then
+    export tmp="/tmp"
+elif [[ -d "$HOME/tmp" ]] ; then
+    export tmp="$HOME/tmp" 
+else
+   mkdir -p $HOME/tmp >/dev/null 2>&1
+   export tmp="$HOME/tmp" 
+fi
+
+#FUNCTIONS
 function sww {
 echo -e "Something went wrong \n$1\n\nHit <enter> to continue\n q to exit."
 read choice
@@ -35,17 +48,6 @@ export blinkon="\033[5m"
 export blinkoff="\033[0m"
 
 if [[ $(uname) == Darwin ]] ; then export orange="$yellow" 
-fi
-}
-
-function check_tmp {
-if [[ -d "/tmp" ]] ; then
-    export tmp="/tmp"
-elif [[ -d "$HOME/tmp" ]] ; then
-    export tmp="$HOME/tmp" 
-else
-   mkdir -p $HOME/tmp >/dev/null 2>&1
-   export tmp="$HOME/tmp" 
 fi
 }
 
@@ -517,7 +519,6 @@ sudo chown parman:www-data /run/parmanode
 colours
 check_parmanode_exists
 yesornoinstallparmanode
-check_temp
 check_docker
 install_homebrew
 install_homebrew_packages
