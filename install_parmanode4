@@ -21,6 +21,7 @@ read choice
 case $choice in x|q) exit ;; esac
 }
 
+
 function colours {
 
 export black="\033[30m"
@@ -511,14 +512,15 @@ EOF
 sudo systemctl restart nginx
 
 #Mount to directory accessible by www-data (nginx)
-sudo mkdir -p /var/www/parmaview
-sudo mount --bind $HOME/parman_programs/parmanode4/parmaview/ /var/www/parmaview || sww "Mounting cgi-bin failed."
+sudo mkdir -p $wwwparmaviewdir
+sudo mount --bind $HOME/parman_programs/parmanode4/parmaview/ $wwwparmaviewdir || sww "Mounting cgi-bin failed."
 sudo mkdir -p /run/parmanode
 sudo chmod 2771 /run/parmanode
 sudo chown parman:www-data /run/parmanode
 
 }
 
+function do_install {
 colours
 check_parmanode_exists
 yesornoinstallparmanode
@@ -531,51 +533,82 @@ parmanode_directories
 configure_git 
 clone_parmanode
 install_parmaview #set up for Linux only at this stage
-
+}
 
 #migrate_from_parmanode3
+function test_parmanode4_install {
 
-clear
-echo -e "\n\n\n    SUCCESS!\n\n\nPlease reboot before using Parmanode."
-sleep 1.5
-exit
+unset tests_all_passed
 
-
-
-#
-#
-#Need to check if this is still needed...
-#
-#
-
-function install_xcode_for_macs {
-while true ; do #loop 1
-if xcode-select -p >/dev/null 2>&1 ; then break ; fi
-
-#Install cldts
-clear
-sudo -k
-echo "
-########################################################################################
-   
-   Command Line Developer Tools is needed.
-
-   There will be a pop up question which you'll need to respond to (It may actually
-   be minimised, so look at the task bar below if you don't see it). The install
-   estimate will initially say some HOURS, but ignore that, it's wrong.
-
-   Once Command Line Tools have successfully installed, enter your computer password,
-   then <enter> to continue.
-
-   Hit <enter> ONLY after the pop up has finished installeding, and not before, or 
-   your computer will melt.
- 
-   If you want to abandon, you can hit <control> c now.
-
-####################################################################################### 
-"
-xcode-select --install
-
-sudo sleep 0.1break
-done #ends loop 1
+function swwtest {
+echo -e "Something went wrong \n$1\n\nHit <enter> to continue\n q to exit."
+read choice
+export tests_all_passed="false"
+case $choice in x|q) exit ;; esac
 }
+
+#source files
+for file in $HOME/parman_programs/parmanode4/src/**/*.sh ; do
+source $file
+done
+parmanode_variables
+
+
+clear
+echo -e "Testing installation. Please wait..." ; sleep 1.5
+
+docker ps >$dn || { echo -e "\n    Docker not detected. Either it didn't install properly, or the
+    the computer needs a little reboot. Hit <enter> to continue tests." ; read ; }
+
+test -d $HOME/parman_programs || swwtest "no parman_programs"
+test -d $HOME/parman_programs/parmanode4 || swwtest "no parman_programs/parmanode4"
+test -d $HOME/.parmanode4 || swwtest "no $HOME/.parmanode4"
+sudo test -d $wwwparmaviewdir || swwtest "no $wwwparmaviewdir"
+sudo test -d /run/parmanode || swwtest "/run/parmanode directory not found"
+
+[[ $(uname) == "Darwin" ]] && ! which brew && { echo -e "HomeBrew not detected. Maybe try installing it yourself. 
+    Hit <enter> to continue tests." ; read ; }
+
+which netcat >$dn || swwtest "netcat not detected."
+which jq >$dn || swwtest "jq not detected."
+which vim >$dn || swwtest "vim not detected."
+which socat >$dn || swwtest "socat not detected."
+which nano >$dn || swwtest "nano not detected."
+which ssh >$dn || swwtest "ssh not detected."
+which nc >$dn || swwtest "nc not detected."
+which tmux >$dn || swwtest "tmux not detected."
+which unzip >$dn || swwtest "unzip not detected."
+which tor >$dn || swwtest "tor not detected."
+which gsed >$dn || swwtest "gsed not detected."
+sudo which nginx >$dn || swwtest "nginx not detected."
+which python3 || swwtest "Python3 not detected"
+which pip3 || swwtest "pip3 not detected"
+pip3 list | grep -q websockets || swwtest "websockets not detected in pip3 list"
+
+[[ $(uname) == "Linux" ]] && { 
+    sudo ls /usr/sbin/fcgiwrap >$dn 2>&1 || swwtest "fcgiwrap not detected."
+    sudo systemctl status fcgiwrap >$dn 2>&1 || swwtest "fcgiwrap not running"
+}
+
+[[ $(uname) == "Darwin" ]] && { source $bashrc >$dn 2>&1 ; grep -q /usr/local/sbin <<<$PATH || sww "/usr/local/sbin not in PATH" ; }
+
+sudo test -f $parmaviewnginx || swwtest "parmaviewnginx file not detected"
+
+sudo systemctl status nginx >$dn 2>&1 || swwtest "nginx not running"
+return 0
+}
+
+
+do_install
+test_parmanode4_install
+
+    if [[ $tests_all_passed != "false" ]] ; then
+        clear
+        echo -e "\n\n\n\r    SUCCESS! \n\n\n\r    Please reboot before using Parmanode.\n\n\n"
+        sleep 1.5
+    else
+        echo -e "\n\n\n\r    Install finished, but at least one thing went wrong.\n\n\n"
+        sleep 3
+    fi
+
+exit
