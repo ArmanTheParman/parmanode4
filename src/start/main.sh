@@ -1,7 +1,7 @@
 function main {            
 
 #source files
-for file in $HOME/parman_programs/parmanode4/bash/**/*.sh ; do
+for file in $HOME/parman_programs/parmanode4/src/**/*.sh ; do
 source $file
 done
 

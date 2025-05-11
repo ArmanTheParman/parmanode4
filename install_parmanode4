@@ -7,11 +7,11 @@ export dn=/dev/null
 
 if [[ -d "/tmp" ]] ; then
     export tmp="/tmp"
-elif [[ -d "$HOME/tmp" ]] ; then
-    export tmp="$HOME/tmp" 
+elif [[ -d "$HOME/tmp_parmanode" ]] ; then
+    export tmp="$HOME/tmp_parmanode" 
 else
-   mkdir -p $HOME/tmp >/dev/null 2>&1
-   export tmp="$HOME/tmp" 
+   mkdir -p $HOME/tmp_parmanode >/dev/null 2>&1
+   export tmp="$HOME/tmp_parmanode" 
 fi
 
 #FUNCTIONS
@@ -397,16 +397,19 @@ brew install fcgiwrap
 brew install autoconf automake fcgi
 
 #build fastcgi
-which fcgiwrap >/dev/null || {
+if ! which fcgiwrap >/dev/null ; then
 git clone https://github.com/gnosek/fcgiwrap.git $tmp/fcgiwrap
 cd $tmp/fcgiwrap
 autoreconf -i
 ./configure
 make
 sudo make install
-grep -q "/usr/local/sbin" <<<$PATH || echo 'export PATH="/usr/local/sbin:$PATH"' >> ~/.zshrc
+grep -q "/usr/local/sbin" <<<$PATH || echo -e '#ADDED by Parmanode4 ...start flag
+export PATH="/usr/local/sbin:$PATH"
+#ADDED by Parmanode4 ...end flag' >> ~/.zshrc
 source ~/.zshrc
-}
+fi
+
 }
 
 function install_linux_packages {
@@ -418,7 +421,7 @@ sudo apt-get install -y nginx-full python3 python3-pip socat vim nano ssh || sww
 sudo apt-get install -y net-tools git procps tmux x11-apps netcat-traditional jq || sww
 sudo apt-get install -y fcgiwrap unzip tor ufw mdadm e2fsprogs e2fsprogs fuse3 libfuse2 || sww
 #sudo  apt-get install-y curl gnupg ca-certificates #installed with docker already
-{ pip3 install websockets || pip3 install websockets --break-system-packages ; } || sww
+{ pip3 install websockets 2>$dn || pip3 install websockets --break-system-packages ; } || sww
 }
 
 function gsed_symlink {
