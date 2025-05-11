@@ -308,14 +308,14 @@ return 0
 
 function make_desktop_text {
 #make desktop text document...
-if [ ! -e $HOME/Desktop/parmanode4_info.txt ] ; then
+if [[ ! -e $HOME/Desktop/parmanode4_info.txt ]] ; then
 cat <<'EOF' | tee $HOME/Desktop/run_parmanode4.txt >/dev/null
 
 To run Parmanode, simply open a browser and visit:
 
 http://parmanode4.local:58000
 
-Good idea to bookmarket that address, then you can delete this text document.
+Good idea to bookmark that address, then you can delete this text document.
 EOF
 
 echo "See new text document on Desktop."
@@ -532,6 +532,7 @@ gsed_symlink
 parmanode_directories
 configure_git 
 clone_parmanode
+make_desktop_text
 install_parmaview #set up for Linux only at this stage
 }
 
