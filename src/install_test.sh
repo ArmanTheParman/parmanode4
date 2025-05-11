@@ -31,12 +31,12 @@ sudo test -d $wwwparmaviewdir || swwtest "no $wwwparmaviewdir"
 [[ $(uname) == "Darwin" ]] && ! which brew && { echo -e "HomeBrew not detected. Maybe try installing it yourself. 
     Hit <enter> to continue tests." ; read ; }
 
-which netcat >$dn 
-which jq
-which vim
-which tmux
-which tor
-which gsed
-sudo which nginx
+which netcat >$dn || swwtest "netcat not detected."
+which jq >$dn || swwtest "jq not detected."
+which vim >$dn || swwtest "vim not detected."
+which tmux >$dn || swwtest "tmux not detected."
+which tor >$dn || swwtest "tor not detected."
+which gsed >$dn || swwtest "gsed not detected."
+sudo which nginx >$dn || swwtest "nginx not detected."
 
 [[ $OS == "Linux" ]] && { sudo ls /usr/sbin/fcgiwrap >$dn 2>&1 || swwtest "fcgiwrap not detected." ; }
