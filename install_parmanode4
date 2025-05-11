@@ -446,8 +446,8 @@ function  configure_git {
 }
 
 function clone_parmanode {
-git clone https://github.com/armantheparman/parmanode4.git $HOME/parman_programs/parmanode4
-cd $HOME/parman_programs/parmanode4 && git config pull.rebase false >/dev/null 2>&1
+git clone https://github.com/armantheparman/parmanode4.git $HOME/parman_programs/parmanode4 2>$dn
+cd $HOME/parman_programs/parmanode4 && git config pull.rebase false >$dn 2>&1
 }
 
 function install_parmaview {
