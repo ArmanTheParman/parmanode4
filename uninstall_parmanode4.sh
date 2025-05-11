@@ -41,6 +41,7 @@ rm $HOME/Desktop/parmanode4_info.txt 2>$dn
 #stop connections
 tmux kill-session -t ws1 2>$dn
 
-success "Parmanode4 has been uninstalled"
+echo -e "\n\nParmanode4 has been uninstalled\n\n"
+sleep 1.5
 return 0
 }
