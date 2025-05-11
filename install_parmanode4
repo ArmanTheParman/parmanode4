@@ -3,8 +3,9 @@
 # curl https://parmanode.com/install_parmanode4 | bash
 
 function sww {
-echo -e "Something went wrong \n$1\n\nHit <enter> to continue\n"
-read
+echo -e "Something went wrong \n$1\n\nHit <enter> to continue\n q to exit."
+read choice
+case $choice in x|q) exit ;; esac
 }
 
 function colours {
