@@ -1,4 +1,4 @@
-function uninstal_parmanode4 {
+function uninstall_parmanode4 {
 
 #source files
 for file in $HOME/parman_programs/parmanode4/src/**/*.sh ; do
