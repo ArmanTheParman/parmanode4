@@ -4,10 +4,12 @@ function uninstall_parmanode4 {
 for file in $HOME/parman_programs/parmanode4/src/**/*.sh ; do
 source $file
 done
+parmanode_variables
 
 test -d $HOME/parman_programs/parmanode4 || { echo -e "\nParmanode4 wasn't found.\n" ; sleep 1.5 ; exit ; }
 
-yesorno "Are you sure you want to uninstall Parmanode4? You will first have the option to remove installed programs" || return 1
+yesorno "Are you sure you want to uninstall Parmanode4? 
+    You will first have the option to remove installed programs" || return 1
 
 #uninstall_apps || return 1
 
