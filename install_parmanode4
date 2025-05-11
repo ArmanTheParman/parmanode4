@@ -17,7 +17,7 @@ fi
 #FUNCTIONS
 function sww {
 echo -e "Something went wrong \n$1\n\nHit <enter> to continue\n q to exit."
-read choice
+read choice </dev/tty
 case $choice in x|q) exit ;; esac
 }
 
@@ -97,7 +97,7 @@ printf "$orange
 $yellow Hit <enter> to continue or 'q' and <enter> to quit$orange
 
 "
-read choice ; clear
+read choice </dev/tty ; clear
 case $choice in q|Q) exit ;; esac
 }
 
@@ -130,7 +130,7 @@ if [[ $(uname) == "Darwin" ]] ; then
     \r########################################################################################
     \r    Hit <enter> to exit.
     "
-    read
+    read </dev/tty
     exit 0
     fi
     install_docker_mac
@@ -214,7 +214,7 @@ $orange
 
 ########################################################################################
 "
-read choice
+read choice </dev/tty
 case $choice in Q|q|Quit|QUIT) exit 0 ;; *) clear ; continue ;; 
 esac 
 done
@@ -240,7 +240,7 @@ $orange
 
 ########################################################################################
 "
-read choice ; case $choice in skip) return 0 ;; esac
+read choice </dev/tty ; case $choice in skip) return 0 ;; esac
 
 clear
 echo -e "${green}Cleaning up first...\n"
@@ -354,7 +354,7 @@ $red
 
 ########################################################################################    
 "
-read choice ; clear
+read choice </dev/tty ; clear
 case $choice in
 q|Q) exit ;; n|No|no) exit ;; 
 y|Y|yes)
@@ -542,7 +542,7 @@ unset tests_all_passed
 
 function swwtest {
 echo -e "Something went wrong \n$1\n\nHit <enter> to continue\n q to exit."
-read choice
+read choice </dev/tty
 export tests_all_passed="false"
 case $choice in x|q) exit ;; esac
 }
@@ -558,7 +558,7 @@ clear
 echo -e "Testing installation. Please wait..." ; sleep 1.5
 
 docker ps >$dn || { echo -e "\n    Docker not detected. Either it didn't install properly, or the
-    the computer needs a little reboot. Hit <enter> to continue tests." ; read ; }
+    the computer needs a little reboot. Hit <enter> to continue tests." ; read </dev/tty ; }
 
 test -d $HOME/parman_programs || swwtest "no parman_programs"
 test -d $HOME/parman_programs/parmanode4 || swwtest "no parman_programs/parmanode4"
@@ -567,7 +567,7 @@ sudo test -d $wwwparmaviewdir || swwtest "no $wwwparmaviewdir"
 sudo test -d /run/parmanode || swwtest "/run/parmanode directory not found"
 
 [[ $(uname) == "Darwin" ]] && ! which brew && { echo -e "HomeBrew not detected. Maybe try installing it yourself. 
-    Hit <enter> to continue tests." ; read ; }
+    Hit <enter> to continue tests." ; read </dev/tty ; }
 
 which netcat >$dn || swwtest "netcat not detected."
 which jq >$dn || swwtest "jq not detected."
