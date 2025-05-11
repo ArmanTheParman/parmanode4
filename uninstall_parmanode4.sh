@@ -24,7 +24,7 @@ sudo test -L /usr/bin/gsed && sudo rm /usr/bin/gsed
         sudo systemctl disable fcgiwrap >$dn 
         sudo systemctl daemon-reload
         sudo systemctl restart nginx 
-    if
+    fi
         
 #clean up bashrc/zshrc
 if [[ $(uname) == "Linux" ]] ; then
