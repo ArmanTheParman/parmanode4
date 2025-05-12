@@ -12,11 +12,12 @@ function getVersion() {
 }
 function getBlockHeight() {
     fetch("/cgi-bin/blockheight.sh")
-        .then(function(response) {
-            return response.text();
-        })
         .then(function(text) {
+            if (text.toLowerCase().includes("file not found")) {
+            document.getElementById("blockheight").textContent = "NA";
+            } else {
             document.getElementById("blockheight").textContent = text.trim();
+            }
         })
         .catch(err => {
             console.warn("NA");
@@ -29,7 +30,11 @@ function getIP() {
             return response.text();
         })
         .then(function(text) {
+            if (text.toLowerCase().includes("file not found"))  {
+            document.getElementById("IP").textContent = "NA";
+            } else {
             document.getElementById("IP").textContent = text.trim();
+            }
         })
         .catch(err => {
             console.warn("NA");

@@ -5,11 +5,12 @@
     align-content: center;
 
     color: rgb(167, 116, 54);
-    font-size: clamp(1em, 2vw, 9999px);
-    letter-spacing: 0.3em;
+    font-size: 2vw; 
+    letter-spacing: 0.3vw;
     margin: 0px;
     padding: 0px;
     text-align: center;
+    height: 100%;
 }
 
 .footer .parmabox {
@@ -21,32 +22,44 @@
     align-items: center;
     align-content: center;
     color: darkorange;
-    font-size: clamp(1em, 1vw, 9999px);
+    font-size: 1.3vw;
     letter-spacing: unset;
 } 
 
 .main .parmabox:hover {
-/*    font-size: clamp(1em, 2.5vw, 9999px);*/
+    font-size: 2.6vw;
     background-color: #1a1a1a;
     color: rgb(22, 198, 10);;
     border-radius: 10px;
-    transition: all 0.4s ease-in-out;
+    transition: all 0.3s ease-in-out;
 }
 .main .parmabox:active {
     background-color: #1a1a1a;
     color: rgb(22,198,10);
-    font-size: clamp(1em, 2.5vw, 9999px);
-    letter-spacing: 0.3em;
+    font-size: 2.5vw;
     border-radius: 10px;
-    transition: all 0s ease-in-out;
+    transition: all 2s ease-in-out;
 }
-/*
-.parmabox:hover {
-    background-color: darkorange;
+.main .parmabox a {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-decoration: none;
+    color: inherit;
+    height: 100%;
+  }
+
+.parmabox.button {
+    transition: all 0.3s ease-in-out;
+    color: rgb(131, 69, 2);
+    font-size: 2vw; 
+    letter-spacing: 0rem;
+    background-color: rgb(36, 28, 15);
+    border-radius: 20px;
+}
+.parmabox.button:hover {
+    background-color: rgb(243, 171, 83);
     color: black;
-    font-size: clamp(1em, 3vw, 9999px);
-    letter-spacing: 0.3em;
-    border-radius: 10px;
-    transition: all 0.7s ease-in-out;
+    border-radius: 25px;
 }
-*/

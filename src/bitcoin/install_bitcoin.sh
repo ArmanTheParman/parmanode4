@@ -4,9 +4,13 @@ function install_bitcoin {
 # Make compatible with Mac, Linux, Docker, VPS
 # Knots is the default
 
+#   -- express install or customised
+#   -- List express options
 #   -- detect if in a docker container
+#   -- decide if bitcoin on this machine or can connect to another one
 #   -- detect bitcoin running and in path.
 #   -- detect presence of .bitcoin directory and manage
+#           * new install will mount over .bitcoin directory wherever the data actuall is, + fstab
 #   -- Choice of bitcoin data directory
 #           * External drive (parmanode drive at $pd)
 #                 ** detect, or format
