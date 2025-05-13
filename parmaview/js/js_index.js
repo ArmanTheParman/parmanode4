@@ -111,9 +111,27 @@ function getInstalledApps() {
        .then(function(json) { installedApps = json; return installedApps; });
 }*/
 
-function loadInstalledApps()  {
-    fetch("/cgi-bin/menu_installedapps.sh")
-       .then(function(response) { return response.text(); })
-       .then(function(text) {
-            document.body=text.trim();})
+function loadInstalledApps() {
+  fetch("/cgi-bin/menu_installedapps.sh")
+    .then(response => response.text())
+    .then(htmlText => {
+      const parser = new DOMParser();
+      const doc = parser.parseFromString(htmlText, 'text/html');
+
+      // Replace the body content
+      document.body.innerHTML = doc.body.innerHTML;
+
+      // Execute scripts
+      const scripts = doc.querySelectorAll('script');
+      scripts.forEach(oldScript => {
+        const newScript = document.createElement('script');
+        // Copy attributes
+        Array.from(oldScript.attributes).forEach(attr =>
+          newScript.setAttribute(attr.name, attr.value)
+        );
+        // Copy script content
+        newScript.textContent = oldScript.textContent;
+        document.body.appendChild(newScript);
+      });
+    });
 }
