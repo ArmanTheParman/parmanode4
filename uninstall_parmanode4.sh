@@ -32,9 +32,9 @@ sudo test -L /usr/bin/gsed && sudo rm /usr/bin/gsed
         
 #clean up bashrc/zshrc
 if [[ $(uname) == "Linux" ]] ; then
-sed -i '/#ADDED by Parmanode4 ...start flag/,/#ADDED by Parmanode4 ...end flag/d' $HOME/.bashrc >$dn 2>&1
+gsed -i '/#ADDED by Parmanode4 ...start flag/,/#ADDED by Parmanode4 ...end flag/d' $HOME/.bashrc >$dn 2>&1
 else
-sed -i '/#ADDED by Parmanode4 ...start flag/,/#ADDED by Parmanode4 ...end flag/d' $HOME/.bashrc#unmount >$dn 2>&1
+gsed -i '/#ADDED by Parmanode4 ...start flag/,/#ADDED by Parmanode4 ...end flag/d' $HOME/.bashrc#unmount >$dn 2>&1
 fi
 
 #clearn up crontab
