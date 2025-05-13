@@ -12,17 +12,22 @@ function getVersion() {
 }
 function getBlockHeight() {
     fetch("/cgi-bin/blockheight.sh")
-        .then(function(text) {
-            if (text.toLowerCase().includes("file not found")) {
-            document.getElementById("blockheight").textContent = "NA";
-            } else {
-            document.getElementById("blockheight").textContent = text.trim();
-            }
-        })
-        .catch(err => {
-            console.warn("NA");
-        });
-}
+      .then(function(res) {
+        return res.text();
+      })
+      .then(function(text) {
+        if (text.toLowerCase().includes("file not found")) {
+          document.getElementById("blockheight").textContent = "NA";
+        } else {
+          document.getElementById("blockheight").textContent = text.trim();
+        }
+      })
+      .catch(function(err) {
+        console.warn("NA");
+      });
+  }
+ 
+
 
 function getIP() {
     fetch("/cgi-bin/getip.sh")
@@ -67,6 +72,12 @@ function showPriceCycle(priceText) {
         getBitcoinPrice(); // Restart cycle after 7.5 sec
     }, 7500);
 }
-
 // Start the loop
 getBitcoinPrice();
+
+let installedApps;
+function getInstalledApps() {
+    return fetch("/cgi-bin/get_installed_apps.sh")
+       .then(function(response) { return response.json(); })
+       .then(function(json) { installedApps = json; return installedApps; });
+}
