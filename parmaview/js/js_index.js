@@ -1,21 +1,30 @@
-window.onload = function () {
-    const fade = document.createElement('div');
-    fade.id = 'fade';
-    fade.style = `
-      position: fixed;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      background: black;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.5s;
-      z-index: 9999;
-    `;
-    document.body.appendChild(fade);
-  };
+  window.addEventListener('load', function () {
+    if (!document.getElementById('fade')) {
+      fade = document.createElement('div');
+      fade.id = 'fade';
+      fade.style = `
+        position: fixed;
+        top: 0; left: 0;
+        width: 100%; height: 100%;
+        background: black;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.5s;
+        z-index: 9999;
+      `;
+      document.body.appendChild(fade);
+    }
+  });
 
+  function fade(callback) {
+    const f = document.getElementById('fade');
+    f.style.pointerEvents = 'auto';
+    f.style.opacity = '1';
+    setTimeout(callback, 500);
+  }
+  
   function fadeAndRedirect(url) {
-    const fade = document.getElementById('fade');
+    fade = document.getElementById('fade');
     fade.style.pointerEvents = 'auto';
     fade.style.opacity = '1';
     setTimeout(() => window.location.href = url, 300);
@@ -71,7 +80,7 @@ function getBitcoinPrice() {
     fetch("/cgi-bin/bitcoinprice.sh")
         .then(res => res.json())
         .then(data => {
-            const price = "$" + data.bitcoin.usd.toLocaleString();
+            price = "$" + data.bitcoin.usd.toLocaleString();
             showPriceCycle(price);
         })
         .catch(err => {
@@ -81,14 +90,13 @@ function getBitcoinPrice() {
 }
 
 function showPriceCycle(priceText) {
-    const el = document.getElementById("price");
+    el = document.getElementById("price");
 
     el.textContent = priceText;
 
     setTimeout(() => {
         el.textContent = "1 bitcoin";
-    }, 5000); // Show "1 bitcoin" after 5 sec
-
+    }, 5000); // Show "1 bitcoin" after 5 se
     setTimeout(() => {
         getBitcoinPrice(); // Restart cycle after 7.5 sec
     }, 7500);
@@ -96,9 +104,16 @@ function showPriceCycle(priceText) {
 // Start the loop
 getBitcoinPrice();
 
-let installedApps;
+/*(let installedApps;
 function getInstalledApps() {
     return fetch("/cgi-bin/get_installed_apps.sh")
        .then(function(response) { return response.json(); })
        .then(function(json) { installedApps = json; return installedApps; });
+}*/
+
+function loadInstalledApps()  {
+    fetch("/cgi-bin/menu_installedapps.sh")
+       .then(function(response) { return response.text(); })
+       .then(function(text) {
+            document.body=text.trim();})
 }
