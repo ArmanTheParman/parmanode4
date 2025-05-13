@@ -1,3 +1,26 @@
+window.onload = function () {
+    const fade = document.createElement('div');
+    fade.id = 'fade';
+    fade.style = `
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: black;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.5s;
+      z-index: 9999;
+    `;
+    document.body.appendChild(fade);
+  };
+
+  function fadeAndRedirect(url) {
+    const fade = document.getElementById('fade');
+    fade.style.pointerEvents = 'auto';
+    fade.style.opacity = '1';
+    setTimeout(() => window.location.href = url, 300);
+  }
+
 function getVersion() {
     fetch("/cgi-bin/version.sh")
         .then(function(response) {
@@ -27,8 +50,6 @@ function getBlockHeight() {
       });
   }
  
-
-
 function getIP() {
     fetch("/cgi-bin/getip.sh")
         .then(function(response) {

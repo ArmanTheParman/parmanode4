@@ -1,7 +1,7 @@
 body {
   margin: 2vw;
   padding: 2vw;
-  border: 2vw dashed orange;
+  border: 2vw dashed darkorange;
   display: grid;
   grid-template-columns: 1fr;
   grid-template-rows: 1.5fr 0.23fr 10fr 1fr ;

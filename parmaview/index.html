@@ -8,14 +8,17 @@
     <link rel="stylesheet" href="parmastyle/parmastyle_base.css">
     <link rel="stylesheet" href="parmastyle/parmastyle_general.css">
     <link rel="stylesheet" href="parmastyle/parmastyle_special.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+
 </head>
 
 <body onload="getBlockHeight(); getIP();">
+
        <span id="version" style="font-size: 1.3rem; 
                                  position: fixed; 
                                  top: 5vw;  
                                  left: 5vw;
-                                 color: rgb(200, 68, 162);">
+                                 color: rgb(167,115,54);">
        Version: 4.0.0
        </span>
     <h1 id="title" class="header">PARMANODE4
@@ -23,11 +26,11 @@
     <div class="spacer"></div>
     <div class="main">
          
-         <div class="parmabox"><a href="menu_add.html">INSTALL<br>APPS</a></div>
+         <div class="parmabox"><a onclick="fadeAndRedirect('menu_add.html')">INSTALL<br>APPS</a></div>
          <div  class="parmabox">USE<br>APPS</div>
          <div  class="parmabox">REMOVE<br>APPS</div>
          <div  class="parmabox">PRODUCTS</div>
-         <div  style="color: green;" class="parmabox">BITCOIN<br>KNOTS</div>
+         <div  style="color: rgb(39, 236, 39);" class="parmabox">BITCOIN</div>
          <div  class="parmabox">EDUCATION</div>
          <div  class="parmabox">UPDATE</div>
          <div  class="parmabox">OVERVIEW</div>
@@ -37,7 +40,7 @@
     </div>
 
     <div class="footer">
-        <div class="parmabox">BITCOIN BLOCK:
+        <div class="parmabox">BITCOIN BLOCK =&nbsp
             <span id="blockheight" style="color: rgb(57, 213, 57);">
               &nbspNA 
             </span></div>

@@ -8,44 +8,48 @@
     <link rel="stylesheet" href="parmastyle/parmastyle_base.css">
     <link rel="stylesheet" href="parmastyle/parmastyle_general.css">
     <link rel="stylesheet" href="parmastyle/parmastyle_special.css">
-</head>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 
+</head>
+<!--########################################################################################-->
 <body>
-    <h1 id="title" class="header">PARMANODE4
+
+    <div id="title" class="header" style="letter-spacing: 0.3em;">INSTALL APPS
        <span id="version" style="font-size: 0.35em; 
                                  position: fixed; 
                                  top: 5vw;  
                                  left: 5vw;
-                                 letter-spacing: 0; 
-                                 color: rgb(200, 68, 162);">
+                                 letter-spacing: 0;"> <!--rgb(200, 68, 162);-->
        Version: 4.0.0
        </span>
-    </h1>
+    </div>
     <div class="spacer"></div>
     <div class="main">
-         <div  class="parmabox">BITCOIN<br>KNOTS</div>
-         <div  class="parmabox">DATABASE<br>SERVER<br>APPS</div>
+        <div  class="parmabox">DATABASE<br>SERVER<br>APPS</div>
          <div  class="parmabox">WALLETS</div>
          <div  class="parmabox">SYSTEM<br>APPS</div>
          <div  class="parmabox">LIGHTNING<br>APPS</div>
-         <div  class="parmabox">BOOKS</div>
+         <div  class="parmabox"><div style="color: rgb(39,236,39);">BITCOIN<br><span style="font-size: 0.55em;">
+                                     </span></div></div>
+          <div  class="parmabox">BOOKS</div>
          <div  class="parmabox">PRIVACY<br>+SECURITY<br>APPS</div>
          <div  class="parmabox">OTHER</div>
          <div  style="color: rgb(3, 183, 248);" class="parmabox">PREMIUM</div>
     </div>
 
     <div class="footer">
-        <a href="index.html"><div class="parmabox button">BACK</div></a>
+        <a onclick="fadeAndRedirect('index.html')"><div class="parmabox button"><i  class="material-icons" style="font-size: 4.5vw">arrow_back</i></div></a>
         <div class="parmabox">1 bitcoin =&nbsp
             <span id="price" style="color: rgb(57, 213, 57);">
             1 bitcoin
             </span>
            </div>
-        <a href="index.html"><div class="parmabox button">HOME</div></a>
+        <a onclick="fadeAndRedirect('index.html')"><div class="parmabox button"><i class="material-icons" style="font-size: 4.5vw;">home</i>
+            
+        </div></a>
     </div>
-
-<script src="js/js_add.js">
-</script>
+<script src="js/js_index.js"></script>
 </body>
 
 </html>
+
