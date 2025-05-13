@@ -104,15 +104,8 @@ function showPriceCycle(priceText) {
 // Start the loop
 getBitcoinPrice();
 
-/*(let installedApps;
-function getInstalledApps() {
-    return fetch("/cgi-bin/get_installed_apps.sh")
-       .then(function(response) { return response.json(); })
-       .then(function(json) { installedApps = json; return installedApps; });
-}*/
-
-function loadInstalledApps() {
-  fetch("/cgi-bin/menu_installedapps.sh")
+function loadInstallApps() {
+  fetch("/cgi-bin/menu_installapps.sh")
     .then(response => response.text())
     .then(htmlText => {
       const parser = new DOMParser();
