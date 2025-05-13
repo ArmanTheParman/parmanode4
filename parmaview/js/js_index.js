@@ -16,7 +16,7 @@
     }
   });
 
-  function fade(callback) {
+  function fadeOut(callback) {
     const f = document.getElementById('fade');
     f.style.pointerEvents = 'auto';
     f.style.opacity = '1';
