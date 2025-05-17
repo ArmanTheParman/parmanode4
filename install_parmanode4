@@ -454,6 +454,37 @@ git clone https://github.com/armantheparman/parmanode4.git $HOME/parman_programs
 cd $HOME/parman_programs/parmanode4 && git config pull.rebase false >$dn 2>&1
 }
 
+function make_parmanode_service_file {
+if [[ $OS != "Linux" ]] ; then return 0 ; fi
+
+cat <<EOF | sudo tee /etc/systemd/system/parmanode.target >$dn 2>&1 #groups services, looks for  parmanode.target.wants
+[Unit]
+Description=Parmanode Group
+EOF
+
+sudo mkdir -p /etc/systemd/system/parmanode.target.wants >$dn 2>&1 #symlinks go here
+sudo mkdir -p /etc/systemd/system/parmanode >$dn 2>&1 #service files go here
+
+echo "[Unit]
+Description=Parmanode JavaScript Server
+After=network.target
+
+[Service]
+ExecStart=python3 -m http.server 58002 --directory=$HOME/parman_programs/parmanode4/parmaview/js/
+KillMode=process
+
+[Install]
+WantedBy=multi-user.target
+" | sudo tee /etc/systemd/system/parmanode/pn4_js.service >$dn 2>&1
+
+sudo ln -s /etc/systemd/system/parmanode.target /etc/systemd/system/multi-user.target.wants/parmanode.target >$dn 2>&1
+sudo ln -s /etc/systemd/system/parmanode/pn4_js.service /etc/systemd/system/parmanode.target.wants/pn4_js.service >$dn 2>&1
+
+sudo systemctl enable --now pn4_js.service >$dn 2>&1
+
+}
+
+
 function install_parmaview {
 
 if [[ $(uname) == "Darwin" ]] ; then return 0 ; fi

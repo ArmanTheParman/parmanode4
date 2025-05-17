@@ -45,6 +45,14 @@ rm $HOME/Desktop/parmanode4_info.txt 2>$dn
 #stop connections
 tmux kill-session -t ws1 2>$dn
 
+
+#clean up parmanode.service
+sudo systemctl stop parmanode.target 2>$dn
+sudo rm -rf /etc/systemd/system/parmanode.target
+sudo rm -rf /etc/systemd/system/parmanode.target.wants
+sudo rm -rf /etc/systemd/system/parmanode
+sudo rm /etc/systemd/system/multi-user.target.wants/parmanode.target 
+
 echo -e "\n\nParmanode4 has been uninstalled\n\n"
 sleep 1.5
 return 0
