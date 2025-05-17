@@ -479,7 +479,7 @@ WantedBy=multi-user.target
 
 sudo ln -s /etc/systemd/system/parmanode.target /etc/systemd/system/multi-user.target.wants/parmanode.target >$dn 2>&1
 sudo ln -s /etc/systemd/system/parmanode/pn4_js.service /etc/systemd/system/parmanode.target.wants/pn4_js.service >$dn 2>&1
-
+sudo systemctl daemon-reload
 sudo systemctl enable --now pn4_js.service >$dn 2>&1
 
 }
