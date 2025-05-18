@@ -564,6 +564,7 @@ parmanode_directories
 configure_git 
 clone_parmanode
 make_desktop_text
+make_parmanode_service_file
 install_parmaview #set up for Linux only at this stage
 }
 
@@ -620,6 +621,7 @@ pip3 list | grep -q websockets || swwtest "websockets not detected in pip3 list"
 [[ $(uname) == "Linux" ]] && { 
     sudo ls /usr/sbin/fcgiwrap >$dn 2>&1 || swwtest "fcgiwrap not detected."
     sudo systemctl status fcgiwrap >$dn 2>&1 || swwtest "fcgiwrap not running"
+    sudo systemctl status pn4_js >$dn 2>&1 || swwtest "parmanode js service not running"
 }
 
 [[ $(uname) == "Darwin" ]] && { source $bashrc >$dn 2>&1 ; grep -q /usr/local/sbin <<<$PATH || sww "/usr/local/sbin not in PATH" ; }
