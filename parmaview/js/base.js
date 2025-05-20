@@ -1,2 +1,3 @@
-import { setmaindisplay } from "./main.js";   
-setmaindisplay();
+import { setMainDisplay } from "./main.js";   
+
+setMainDisplay();
