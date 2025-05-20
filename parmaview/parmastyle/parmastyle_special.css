@@ -26,21 +26,21 @@
     letter-spacing: unset;
 } 
 
-.main .parmabox:hover {
+.middle .parmabox:hover {
     font-size: 2.6vw;
     background-color: #1a1a1a;
     color: darkorange;
     border-radius: 10px;
     transition: all 0.3s ease-in-out;
 }
-.main .parmabox:active {
+.middle .parmabox:active {
     background-color: #1a1a1a;
     color: rgb(22,198,10);
     font-size: 2.5vw;
     border-radius: 10px;
     transition: all 2s ease-in-out;
 }
-.main .parmabox a {
+.middle .parmabox a {
     flex: 1;
     display: flex;
     justify-content: center;

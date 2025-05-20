@@ -8,7 +8,7 @@ body {
   grid-template-areas:
       "header"
       "spacer"
-      "main"
+      "middle"
       "footer";
   height: 100%
 }
@@ -28,9 +28,9 @@ body {
   letter-spacing: 2vw; 
   height: 100%;
 }
-.main {
+.middle {
   height: 100%;
-  grid-area: main;
+  grid-area: middle;
   display: grid;
   grid-template-rows: 1fr 1fr 1fr;
   grid-template-columns: 1fr 1fr 1fr;
