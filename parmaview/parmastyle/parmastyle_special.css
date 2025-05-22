@@ -5,8 +5,8 @@
     align-content: center;
 
     color: rgb(167, 116, 54);
-    font-size: 2vw; 
-    letter-spacing: 0.3vw;
+    font-size: min(2vw, 24px); 
+    letter-spacing: min(0.3vw, 6px);;
     margin: 0px;
     padding: 0px;
     text-align: center;
@@ -15,19 +15,19 @@
 
 .footer .parmabox {
     padding: 0;
-    margin-top: 1vw;
+    margin-top: min(1vw, 12px);
     height: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
     align-content: center;
     color: darkorange;
-    font-size: 1.3vw;
+    font-size: min(1.3vw, 15.6px);
     letter-spacing: unset;
 } 
 
 .middle .parmabox:hover {
-    font-size: 2.6vw;
+    font-size: min(2.6vw, 31.2px);
     background-color: #1a1a1a;
     color: darkorange;
     border-radius: 10px;
@@ -36,7 +36,7 @@
 .middle .parmabox:active {
     background-color: #1a1a1a;
     color: rgb(22,198,10);
-    font-size: 2.5vw;
+    font-size: min(2.5vw, 30px);
     border-radius: 10px;
     transition: all 2s ease-in-out;
 }
@@ -53,7 +53,7 @@
 .parmabox.button {
     transition: all 0.3s ease-in-out;
     color: darkorange; 
-    font-size: 2vw; 
+    font-size: min(2vw, 24px);; 
     background-color: rgb(36, 28, 15);
     background-color: rgb(24,24,24);
     border-radius: 20px;

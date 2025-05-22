@@ -1,7 +1,12 @@
+* {
+  box-sizing: border-box;
+}
+
 body {
-  margin: 2vw;
-  padding: 2vw;
-  border: 2vw dashed darkorange;
+  position: relative;
+  margin: min(2vw, 24px) auto;
+  padding: min(2vw, 24px); 
+  border: min(2vw, 24px) dashed darkorange;
   display: grid;
   grid-template-columns: 1fr;
   grid-template-rows: 1.5fr 0.23fr 10fr 1fr ;
@@ -10,7 +15,8 @@ body {
       "spacer"
       "middle"
       "footer";
-  height: 100%
+  height: 100%;
+  max-width: 1200px;
 }
 .spacer {
   grid-area: spacer;
@@ -24,8 +30,8 @@ body {
   align-items: center;
   align-content: center;
   color: darkorange;
-  font-size: 4vw;
-  letter-spacing: 2vw; 
+  font-size: min(4vw, 48px);
+  letter-spacing: min(2vw, 24px); 
   height: 100%;
 }
 .middle {
@@ -38,10 +44,10 @@ body {
       "a1 a2 a3"
       "b4 b5 b6"
       "c7 c8 c9";
-  grid-gap: 1vw;
-  padding: 7.5vw;
+  grid-gap: min(1vw, 12px);
+  padding: min(7.5vw, 90px);
   color: darkorange;
-  font-size: 2vw;
+  font-size: min(2vw, 24px);
 }
 
 .footer {
