@@ -436,8 +436,8 @@ function parmanode_directories {
 mkdir -p $HOME/parman_programs
 mkdir -p $HOME/parmanode4_apps
 mkdir -p $HOME/.parmanode4
-touch    $HOME/.parmanode4/installed.conf
-touch    $HOME/.parmanode4/parmanode.conf
+touch    $HOME/.parmanode4/installed.json
+touch    $HOME/.parmanode4/parmanode.json
 touch    $HOME/.parmanode4/parmanode.log
 touch    $HOME/.parmanode4/debug.log
 touch    $HOME/.parmanode4/temp

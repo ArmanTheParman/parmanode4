@@ -29,12 +29,12 @@ export hpa=$hp
 export pn=$pp/parmanode4
 export pd=$parmanode_drive
 
-#parmanode4 confs
-export pdc=$dp/parmanode.conf
-export pc=$dp/parmanode.conf
-export ic=$dp/installed.conf
-export oc=$dp/overview.conf
-export hm=$dp/hide_messages.conf
+#parmanode4 jsons/confs
+export pdc=$dp/parmadrive.conf
+export pj=$dp/parmanode.json
+export ij=$dp/installed.json
+export oj=$dp/overview.json
+export hm=$dp/hide_messages.json
 
 #parmanode logs
 export debug=$dp/debug.log
