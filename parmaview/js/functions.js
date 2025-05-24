@@ -4,6 +4,16 @@ export function clearBody() {
   });
 }
 
+export function sourceVariables() {
+  return fetch("/cgi-bin/source_variables.sh")
+      .then(response => response.json())
+      .then(data => data)
+      .catch(error => {
+          console.error('Error fetching source variables:', error);
+          return null; 
+      });
+}
+
 export function getInstalledApps() {
 
     return  fetch('/cgi-bin/installed_apps.sh')
