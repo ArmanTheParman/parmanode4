@@ -5,6 +5,8 @@
 #GLOBAL VARIABLES...
 export dn=/dev/null
 
+
+#These temp directories are for installation only
 if [[ -d "/tmp" ]] ; then
     export tmp="/tmp"
 elif [[ -d "$HOME/tmp_parmanode" ]] ; then
@@ -13,6 +15,7 @@ else
    mkdir -p $HOME/tmp_parmanode >/dev/null 2>&1
    export tmp="$HOME/tmp_parmanode" 
 fi
+sudo rm -rf $tmp/* >/dev/null 2>&1
 
 #FUNCTIONS
 function sww {
@@ -396,6 +399,7 @@ brew install gsed
 brew install nginx
 brew install fcgiwrap
 brew install autoconf automake fcgi
+brew install perl
 
 #build fastcgi
 if ! which fcgiwrap >/dev/null ; then
@@ -434,13 +438,12 @@ fi
 function parmanode_directories {
 #Check files and directories exist
 mkdir -p $HOME/parman_programs
-mkdir -p $HOME/parmanode4_apps
-mkdir -p $HOME/.parmanode4
+mkdir -p $HOME/parmanode4_apps/{bitcoin,bitcoinknots}
+mkdir -p $HOME/.parmanode4/{scripts,logs,confg,tmp}
 touch    $HOME/.parmanode4/installed.json
 touch    $HOME/.parmanode4/parmanode.json
 touch    $HOME/.parmanode4/parmanode.log
 touch    $HOME/.parmanode4/debug.log
-touch    $HOME/.parmanode4/temp
 return 0
 }
 
@@ -452,36 +455,6 @@ function  configure_git {
 function clone_parmanode {
 git clone https://github.com/armantheparman/parmanode4.git $HOME/parman_programs/parmanode4 2>$dn
 cd $HOME/parman_programs/parmanode4 && git config pull.rebase false >$dn 2>&1
-}
-
-function make_parmanode_service_file {
-if [[ $OS != "Linux" ]] ; then return 0 ; fi
-
-cat <<EOF | sudo tee /etc/systemd/system/parmanode.target >$dn 2>&1 #groups services, looks for  parmanode.target.wants
-[Unit]
-Description=Parmanode Group
-EOF
-
-sudo mkdir -p /etc/systemd/system/parmanode.target.wants >$dn 2>&1 #symlinks go here
-sudo mkdir -p /etc/systemd/system/parmanode >$dn 2>&1 #service files go here
-
-echo "[Unit]
-Description=Parmanode JavaScript Server
-After=network.target
-
-[Service]
-ExecStart=python3 -m http.server 58002 --directory=$HOME/parman_programs/parmanode4/parmaview/js/
-KillMode=process
-
-[Install]
-WantedBy=multi-user.target
-" | sudo tee /etc/systemd/system/parmanode/pn4_js.service >$dn 2>&1
-
-sudo ln -s /etc/systemd/system/parmanode.target /etc/systemd/system/multi-user.target.wants/parmanode.target >$dn 2>&1
-sudo ln -s /etc/systemd/system/parmanode/pn4_js.service /etc/systemd/system/parmanode.target.wants/pn4_js.service >$dn 2>&1
-sudo systemctl daemon-reload
-sudo systemctl enable --now pn4_js.service >$dn 2>&1
-
 }
 
 
@@ -564,7 +537,7 @@ parmanode_directories
 configure_git 
 clone_parmanode
 make_desktop_text
-#make_parmanode_service_file
+source $HOME/parman_programs/parmanode4/src/services/make_parmanode_service ; make_parmanode_service
 install_parmaview #set up for Linux only at this stage
 }
 
@@ -616,6 +589,7 @@ which gsed >$dn || swwtest "gsed not detected."
 sudo which nginx >$dn || swwtest "nginx not detected."
 which python3 >$dn || swwtest "Python3 not detected"
 which pip3 >$dn || swwtest "pip3 not detected"
+which shasum >$dn || swwtest "shasum not detected"
 pip3 list | grep -q websockets || swwtest "websockets not detected in pip3 list"
 
 [[ $(uname) == "Linux" ]] && { 
@@ -649,7 +623,7 @@ test_parmanode4_install
         echo -e "\n\n\n\r    Install finished, but at least one thing went wrong.\n\n\n"
         sleep 3
     fi
-
+sudo rm -rf $tmp/* >/dev/null 2>&1
 exit
 
 ##############################################################################################################################
