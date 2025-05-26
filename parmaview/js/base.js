@@ -57,7 +57,7 @@ document.body.appendChild(fadeElement);
 // This exports a promise waiting on json data, and should be imported by other files
 // Usage is someVariable = variablesPromise.then(data => data)
 // or variablesPromise.then(data => { someVariable = data; });
-export let variablesPromise = sourceVariables();
+window.variablesPromise = sourceVariables();
 
 // Run main display
 setMainDisplay();

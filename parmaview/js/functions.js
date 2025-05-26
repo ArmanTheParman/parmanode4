@@ -5,6 +5,7 @@ export function clearBody() {
 }
 
 export function sourceVariables() {
+//useage: variablePromise = sourceVariables();
   return fetch("/cgi-bin/source_variables.sh")
       .then(response => response.json())
       .then(data => data)
