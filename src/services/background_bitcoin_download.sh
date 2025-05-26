@@ -9,6 +9,8 @@ After=network.target
 [Service]
 ExecStart=$HOME/parman_programs/parmanode4/scripts/background_bitcoin_download.sh
 KillMode=process
+User=$USER
+Group=$USER
 
 [Install]
 WantedBy=parmanode.target         

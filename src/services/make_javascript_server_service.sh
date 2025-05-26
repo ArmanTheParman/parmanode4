@@ -9,6 +9,8 @@ After=network.target
 [Service]
 ExecStart=python3 -m http.server 58002 --directory=$HOME/parman_programs/parmanode4/parmaview/js/
 KillMode=process
+User=$USER
+Group=$USER
 
 [Install]
 WantedBy=multi-user.target         #parmanode.target if no autostart at boot

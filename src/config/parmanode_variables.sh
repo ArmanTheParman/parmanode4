@@ -4,9 +4,11 @@ function parmanode_variables {
 export dn=/dev/null
 export bashversionmajor=$(bash --version | head -n1 | cut -d \. -f 1 | grep -Eo '[0-9]+')
 export bashversion=$(bash --version | head -n1 | awk '{print $4}' | sed -nE 's/.*([0-9]+\.[0-9]+\.[0-9]+).*/\1/p')
+export chip="$(uname -m)" 
 
 #OS specific
 if [[ $(uname) == "Linux" ]] ; then
+    export OS="Linux"
     export macprefix=""
     export parmanode_drive="/media/$USER/parmanode"
     export bashrc="$HOME/.bashrc"
@@ -14,6 +16,7 @@ if [[ $(uname) == "Linux" ]] ; then
     export varlibtor="/var/lib/tor"
 
 elif [[ $(uname) == "Darwin" ]] ; then
+    export OS="Mac"
     export macprefix="$(brew --prefix 2>/dev/null)" ; if [[ -z $macprefix ]] ; then export macprefix="/usr/local" ; fi
     export parmanode_drive="/Volumes/parmanode"
     export bashrc="$HOME/.zshrc"
@@ -30,11 +33,11 @@ export pn=$pp/parmanode4
 export pd=$parmanode_drive
 
 #parmanode4 jsons/confs
-export pdc=$dp/parmadrive.conf
-export pj=$dp/parmanode.json
-export ij=$dp/installed.json
-export oj=$dp/overview.json
-export hm=$dp/hide_messages.json
+export pdc=$dp/config/parmadrive.conf
+export pj=$dp/config/parmanode.json
+export ij=$dp/config/installed.json
+export oj=$dp/config/overview.json
+export hm=$dp/config/hide_messages.json
 
 #parmanode logs
 export debug=$dp/debug.log

@@ -439,12 +439,28 @@ function parmanode_directories {
 #Check files and directories exist
 mkdir -p $HOME/parman_programs
 mkdir -p $HOME/parmanode4_apps/{bitcoin,bitcoinknots}
-mkdir -p $HOME/.parmanode4/{scripts,logs,confg,tmp}
+mkdir -p $HOME/.parmanode4/{scripts,logs,confg,tmp/bitcoin,tmp/bitcoinknots}
 touch    $HOME/.parmanode4/installed.json
 touch    $HOME/.parmanode4/parmanode.json
 touch    $HOME/.parmanode4/parmanode.log
 touch    $HOME/.parmanode4/debug.log
 return 0
+}
+
+function make_configs {
+
+echo "{
+    \"parmanode\": {
+    \"version\": \"4.0\",
+    \"install_date\": \"$(date +%Y-%m-%d)\",
+    \"install_time\": \"$(date +%H:%M:%S)\",
+    \"install_os\": \"$(uname -s)\",
+    \"install_arch\": \"$(uname -m)\"
+    },
+    \"installed\": {},
+    \"parmadrive\": {}
+}" | jq . | tee $tmp/parmanode_conf.json  >$dn 2>&1
+mv $tmp/parmanode_conf.json $pj
 }
 
 function  configure_git {
@@ -457,6 +473,9 @@ git clone https://github.com/armantheparman/parmanode4.git $HOME/parman_programs
 cd $HOME/parman_programs/parmanode4 && git config pull.rebase false >$dn 2>&1
 }
 
+function source_parmanode_variables {
+source $HOME/parman_programs/parmanode4/src/config/parmanode_variables.sh >$dn 2>&1
+}
 
 function install_parmaview {
 
@@ -533,12 +552,15 @@ install_homebrew
 install_homebrew_packages
 install_linux_packages
 gsed_symlink 
-parmanode_directories
 configure_git 
 clone_parmanode
+source_parmanode_variables
+parmanode_directories
+make_configs
 make_desktop_text
 source $HOME/parman_programs/parmanode4/src/services/make_parmanode_service ; make_parmanode_service
 install_parmaview #set up for Linux only at this stage
+sudo systemctl start download_bitcoin_service >$dn 2>&1 
 }
 
 #migrate_from_parmanode3
@@ -624,6 +646,7 @@ test_parmanode4_install
         sleep 3
     fi
 sudo rm -rf $tmp/* >/dev/null 2>&1
+
 exit
 
 ##############################################################################################################################
