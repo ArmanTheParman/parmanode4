@@ -558,7 +558,9 @@ source_parmanode_variables
 parmanode_directories
 make_configs
 make_desktop_text
-source $HOME/parman_programs/parmanode4/src/services/make_parmanode_service ; make_parmanode_service
+source $HOME/parman_programs/parmanode4/src/services/make_parmanode_service 
+  make_parmanode_service
+
 install_parmaview #set up for Linux only at this stage
 sudo systemctl start download_bitcoin_service >$dn 2>&1 
 }
