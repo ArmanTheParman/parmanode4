@@ -24,6 +24,19 @@ read choice </dev/tty
 case $choice in x|q) exit ;; esac
 }
 
+function check_architecture {
+if [[ $(uname -m) == "aarch64" ]] ; then 
+    if [[ $(file /bin/bash | grep 64 | cut -d " " -f 3) != "64-bit" ]] ; then
+    clear
+    printf "It looks like you are running a 64-bit kernal on a 64-bit microprocessor but 
+    with 32-bit binaries. While this is possible (eg Raspbian OS 32-bit for 64-bit
+    Raspberry Pis) Electrs can't cope. Aborting. If you really want Electrs on this
+    machine, you'll need to install the 64-bit version of the operating system,
+    basically starting over completely. Sorry!"
+
+    exit 1
+fi
+}
 
 function colours {
 
@@ -371,19 +384,28 @@ if ! [[ $(uname) == "Darwin" ]] ; then return 0 ; fi
 
 brew update
 
-brew install git
+brew install git openssl
 brew install bash
-brew install netcat
-brew install jq
-brew install vim
-brew install tmux
+brew install netcat socat
+brew install vim tmux jq
 brew install tor
-brew install gnu-sed
-brew install gsed
+brew install gnu-sed gsed
 brew install nginx
 brew install fcgiwrap
 brew install autoconf automake fcgi
-brew install perl
+brew install perl rust python
+
+#used for electrs
+if ! which clang >$dn 2>&1 ; then brew install --cask clay ; fi
+if [[ ! -e /Library/Developer/CommandLineTools ]] ; then
+xcode-select --install
+# /Library/Developer/CommandLineTools (delete to uninstall build-essentials)
+fi
+
+if [[ $(cargo --version | cut -d . -f 2) -lt 63 ]] ; then
+brew upgrade rust
+fi
+fi
 
 #build fastcgi
 if ! which fcgiwrap >/dev/null ; then
@@ -406,17 +428,14 @@ function install_linux_packages {
 if [[ $(uname) == "Darwin" ]] ; then return 0 ; fi
 
 sudo apt-get update -y
-sudo apt-get install -y nginx-full python3 python3-pip socat vim nano ssh || sww
+sudo apt-get install -y openssl nginx-full python3 python3-pip socat vim nano ssh ip || sww
 sudo apt-get install -y net-tools git procps tmux x11-apps netcat-traditional jq || sww
 sudo apt-get install -y fcgiwrap unzip tor ufw mdadm e2fsprogs e2fsprogs fuse3 libfuse2 || sww
+sudo apt-get install -y clang cmake build-essential automake libtool pkg-config || sww
 #sudo  apt-get install-y curl gnupg ca-certificates #installed with docker already
+which gsed >/dev/null 2>&1 || sudo ln -s $(which sed) /usr/bin/gsed 
 { pip3 install websockets 2>$dn || pip3 install websockets --break-system-packages ; } || sww
-}
-
-function gsed_symlink {
-if [[ $(uname) == "Linux" ]] && ! which gsed >/dev/null 2>&1 ; then
-    sudo ln -s $(which sed) /usr/bin/gsed 
-fi
+cargo_check
 }
 
 
@@ -438,7 +457,7 @@ function parmanode_directories {
 #Check files and directories exist
 mkdir -p $HOME/parman_programs
 mkdir -p $HOME/parmanode4_apps/{bitcoin,bitcoinknots}
-mkdir -p $HOME/.parmanode4/{scripts,logs,confg,tmp/bitcoin,tmp/bitcoinknots}
+mkdir -p $HOME/.parmanode4/{scripts,logs,confg,errors,tmp/bitcoin,tmp/bitcoinknots}
 touch    $HOME/.parmanode4/installed.json
 touch    $HOME/.parmanode4/parmanode.json
 touch    $HOME/.parmanode4/parmanode.log
@@ -482,6 +501,27 @@ function source_parmanode_services {
     for file in $HOME/parman_programs/parmanode4/src/services/*.sh ; do
     source $file
     done
+}
+
+function cargo_check {
+if which cargo ; then
+    source $HOME/.cargo/env 
+    if [[ $(cargo --version | cut -d . -f 2) -lt 63 ]] ; then
+         #will uninstall then reinstall cargo, because < 63 version
+         sudo apt-get purge cargo rustc -y
+         curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs/ | sh -s -- -y || sww "Cargo failed install"
+         source $HOME/.cargo/env 
+         if [[ $(cargo --version | cut -d . -f 2) -lt 63 ]] ; then 
+            sww "Cargo -- too old, version error: $(cargo --version)" 
+         fi
+    fi
+else
+    curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs/ | sh -s -- -y || sww "Cargo failed install"
+    source $HOME/.cargo/env 
+    if [[ $(cargo --version | cut -d . -f 2) -lt 63 ]] ; then 
+        sww "Cargo -- too old, version error: $(cargo --version)" 
+    fi
+fi
 }
 
 function install_parmaview {
@@ -551,6 +591,8 @@ sudo chown parman:www-data /run/parmanode
 }
 
 function do_install {
+
+check_architecture
 colours
 check_parmanode_exists
 yesornoinstallparmanode
@@ -558,7 +600,6 @@ check_docker #107
 install_homebrew #320
 install_homebrew_packages #375
 install_linux_packages #441
-gsed_symlink  #423
 configure_git  #473
 clone_parmanode #478
 source_parmanode_variables #483
@@ -567,10 +608,12 @@ make_configs
 make_desktop_text
 
 source_parmanode_services
-  make_parmanode_service
-  make_background_bitcoin_download_service
-  make_socat_service
-  make_javascript_server_service
+    make_parmanode_service
+    make_background_bitcoin_download_service
+    make_background_elects_download_service
+    make_socat_service
+    make_javascript_server_service
+    make_electrs_service
 
 install_parmaview #set up for Linux only at this stage
 sudo systemctl start download_bitcoin_service >$dn 2>&1 

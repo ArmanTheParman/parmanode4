@@ -1,4 +1,6 @@
 #!/bin/bash
+source $HOME/parman_programs/parmanode4/src/config/parmanode_variables.sh
+parmanode_variables
 
 #Executed by service file
 #Downloads Bitcoin Core and Knots precompiled files, verifies, unpacks, and also downloads github repos,
