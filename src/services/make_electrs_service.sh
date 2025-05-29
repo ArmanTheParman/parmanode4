@@ -33,6 +33,6 @@ WantedBy=multi-user.target
 EOF
 
 sudo systemctl daemon-reload >$dn
-sudo systemctl enable electrs.service >$dn
-
+#enable when users installs
+    #sudo systemctl enable electrs.service >$dn
 }

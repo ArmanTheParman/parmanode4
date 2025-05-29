@@ -106,4 +106,4 @@ unzip bitcoin*.zip
 mkdir -p ./tar ; tar -xf bitcoin-* -C ./tar/
 fi
 git clone https://github.com/bitcoinknots/bitcoin.git bitcoinknots_github
-jq 'del(.parmanode.bitcoin_download)' $pj >$pj.tmp && jq '.parmanode += {bitcoin_downlaoded: true}' $pj.tmp >$pj && rm $pj.tmp
+jq 'del(.parmanode.bitcoin_download)' $pj >$pj.tmp && jq '.parmanode += {bitcoin_downloaded: true}' $pj.tmp >$pj && rm $pj.tmp

@@ -392,9 +392,9 @@ brew install tor
 brew install gnu-sed gsed
 brew install nginx
 brew install fcgiwrap
-brew install autoconf automake fcgi
+brew install autoconf automake fcgi libtool 
 brew install perl rust python
-
+brew install 
 #used for electrs
 if ! which clang >$dn 2>&1 ; then brew install --cask clay ; fi
 if [[ ! -e /Library/Developer/CommandLineTools ]] ; then
@@ -438,7 +438,6 @@ which gsed >/dev/null 2>&1 || sudo ln -s $(which sed) /usr/bin/gsed
 cargo_check
 }
 
-
 function  configure_git {
     if ! git config --global user.email ; then git config --global user.email parman@parmanode.com ; fi
     if ! git config --global user.name ; then git config --global user.name parmanode_user ; fi
@@ -457,7 +456,7 @@ function parmanode_directories {
 #Check files and directories exist
 mkdir -p $HOME/parman_programs
 mkdir -p $HOME/parmanode4_apps/{bitcoin,bitcoinknots}
-mkdir -p $HOME/.parmanode4/{scripts,logs,confg,errors,tmp/bitcoin,tmp/bitcoinknots}
+mkdir -p $HOME/.parmanode4/{scripts,verification,logs,confg,errors,tmp/bitcoin,tmp/bitcoinknots,tmp/sparrow}
 touch    $HOME/.parmanode4/installed.json
 touch    $HOME/.parmanode4/parmanode.json
 touch    $HOME/.parmanode4/parmanode.log
@@ -611,6 +610,7 @@ source_parmanode_services
     make_parmanode_service
     make_background_bitcoin_download_service
     make_background_elects_download_service
+    make_background_electrum_download_service
     make_socat_service
     make_javascript_server_service
     make_electrs_service

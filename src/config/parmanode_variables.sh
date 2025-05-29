@@ -7,6 +7,15 @@ export bashversionmajor=$(bash --version | head -n1 | cut -d \. -f 1 | grep -Eo 
 export bashversion=$(bash --version | head -n1 | awk '{print $4}' | sed -nE 's/.*([0-9]+\.[0-9]+\.[0-9]+).*/\1/p')
 export chip="$(uname -m)" 
 
+if   [[ $(uname) == "Darwin" ]] ; then
+         export computer_type=Mac
+elif sudo grep "Model" /proc/cpuinfo | grep -q "Raspberry" ; then 
+         export computer_type=Pi 
+else 
+         export computer_type=LinuxPC
+fi
+
+
 if [[ -e /.dockerenv ]] ; then #docker container detected
     export IP=$( ip a | grep "inet" | grep 172 | awk '{print $2}' | cut -d '/' -f 1 | head -n1 )
 else 
@@ -38,6 +47,7 @@ export dpe=$dp/errors
 export hp=$HOME/parmanode4_apps
 export hpa=$hp
 export pn=$pp/parmanode4
+export pn4=$pn
 export pd=$parmanode_drive
 
 #parmanode4 jsons/confs
