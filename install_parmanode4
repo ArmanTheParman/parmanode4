@@ -309,22 +309,6 @@ case $choice in q|Q) exit 0 ;; esac
 return 0
 }
 
-function make_desktop_text {
-#make desktop text document...
-if [[ ! -e $HOME/Desktop/parmanode4_info.txt ]] ; then
-cat <<'EOF' | tee $HOME/Desktop/run_parmanode4.txt >/dev/null
-
-To run Parmanode, simply open a browser and visit:
-
-http://parmanode4.local:58000
-
-Good idea to bookmark that address, then you can delete this text document.
-EOF
-
-echo "See new text document on Desktop."
-fi
-}
-
 
 function install_homebrew {
 
@@ -435,6 +419,21 @@ if [[ $(uname) == "Linux" ]] && ! which gsed >/dev/null 2>&1 ; then
 fi
 }
 
+
+function  configure_git {
+    if ! git config --global user.email ; then git config --global user.email parman@parmanode.com ; fi
+    if ! git config --global user.name ; then git config --global user.name parmanode_user ; fi
+}
+
+function clone_parmanode {
+git clone https://github.com/armantheparman/parmanode4.git $HOME/parman_programs/parmanode4 2>$dn
+cd $HOME/parman_programs/parmanode4 && git config pull.rebase false >$dn 2>&1
+}
+
+function source_parmanode_variables {
+source $HOME/parman_programs/parmanode4/src/config/parmanode_variables.sh >$dn 2>&1
+}
+
 function parmanode_directories {
 #Check files and directories exist
 mkdir -p $HOME/parman_programs
@@ -463,18 +462,26 @@ echo "{
 mv $tmp/parmanode_conf.json $pj
 }
 
-function  configure_git {
-    if ! git config --global user.email ; then git config --global user.email parman@parmanode.com ; fi
-    if ! git config --global user.name ; then git config --global user.name parmanode_user ; fi
+function make_desktop_text {
+#make desktop text document...
+if [[ ! -e $HOME/Desktop/parmanode4_info.txt ]] ; then
+cat <<'EOF' | tee $HOME/Desktop/run_parmanode4.txt >/dev/null
+
+To run Parmanode, simply open a browser and visit:
+
+http://parmanode4.local:58000
+
+Good idea to bookmark that address, then you can delete this text document.
+EOF
+
+echo "See new text document on Desktop."
+fi
 }
 
-function clone_parmanode {
-git clone https://github.com/armantheparman/parmanode4.git $HOME/parman_programs/parmanode4 2>$dn
-cd $HOME/parman_programs/parmanode4 && git config pull.rebase false >$dn 2>&1
-}
-
-function source_parmanode_variables {
-source $HOME/parman_programs/parmanode4/src/config/parmanode_variables.sh >$dn 2>&1
+function source_parmanode_services {
+    for file in $HOME/parman_programs/parmanode4/src/services/*.sh ; do
+    source $file
+    done
 }
 
 function install_parmaview {
@@ -547,19 +554,23 @@ function do_install {
 colours
 check_parmanode_exists
 yesornoinstallparmanode
-check_docker
-install_homebrew
-install_homebrew_packages
-install_linux_packages
-gsed_symlink 
-configure_git 
-clone_parmanode
-source_parmanode_variables
-parmanode_directories
+check_docker #107
+install_homebrew #320
+install_homebrew_packages #375
+install_linux_packages #441
+gsed_symlink  #423
+configure_git  #473
+clone_parmanode #478
+source_parmanode_variables #483
+parmanode_directories #429
 make_configs
 make_desktop_text
-source $HOME/parman_programs/parmanode4/src/services/make_parmanode_service 
+
+source_parmanode_services
   make_parmanode_service
+  make_background_bitcoin_download_service
+  make_socat_service
+  make_javascript_server_service
 
 install_parmaview #set up for Linux only at this stage
 sudo systemctl start download_bitcoin_service >$dn 2>&1 
