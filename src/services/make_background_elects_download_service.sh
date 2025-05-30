@@ -1,4 +1,4 @@
-function make_background_bitcoin_download_service {
+function make_background_electrs_download_service {
 
 if [[ $(uname) == "Darwin" ]] ; then return 0 ; fi
 
