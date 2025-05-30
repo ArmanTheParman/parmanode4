@@ -1,6 +1,6 @@
 function make_electrs_service {
 
-cat <<EOF | sudo tee /etc/systemd/system/electrs.service >$dn 2>&1
+cat <<EOF | sudo tee /etc/systemd/system/parmanode/electrs.service >$dn 2>&1
 [Unit]
 Description=Electrs
 After=bitcoind.service
@@ -31,8 +31,9 @@ StandardError=append:$HOME/.electrs/run_electrs.log
 [Install]
 WantedBy=multi-user.target
 EOF
+sudo ln -s /etc/systemd/system/parmanode/electrs.service /etc/systemd/system/parmanode.target.wants/electrs.service >$dn 2>&1
+sudo systemctl daemon-reload
 
-sudo systemctl daemon-reload >$dn
 #enable when users installs
     #sudo systemctl enable electrs.service >$dn
 }
