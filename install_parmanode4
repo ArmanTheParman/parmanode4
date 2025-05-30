@@ -673,7 +673,6 @@ case $choice in x|q) exit ;; esac
 
 
 function test_parmanode4_install {
-set -x
 unset tests_all_passed
 
 echo -e "\nTesting installation. Please wait..." ; sleep 0.5
@@ -705,7 +704,7 @@ sudo which nginx >$dn || swwtest "nginx not detected."
 which python3 >$dn || swwtest "Python3 not detected"
 which pip3 >$dn || swwtest "pip3 not detected"
 which shasum >$dn || swwtest "shasum not detected"
-pip3 list | grep -q websockets || swwtest "websockets not detected in pip3 list"
+pip3 show websockets >$dn 2>&1 || swwtest "websockets not detected in pip3 list"
 
 [[ $(uname) == "Linux" ]] && { 
     sudo ls /usr/sbin/fcgiwrap >$dn 2>&1 || swwtest "fcgiwrap not detected."
@@ -718,7 +717,6 @@ pip3 list | grep -q websockets || swwtest "websockets not detected in pip3 list"
 sudo test -f $parmaviewnginx || swwtest "parmaviewnginx file not detected"
 
 sudo systemctl status nginx >$dn 2>&1 || swwtest "nginx not running"
-sett +x
 return 0
 }
 ##############################################################################################################################
