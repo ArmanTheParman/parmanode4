@@ -71,15 +71,15 @@ fi
 
 
 function check_parmanode_exists {
-if [[ -d "$HOME/.parmanode4" ]] ; then
+if [[ -d "$HOME/.parmanode4" ]] || [[ -d "$HOME/parman_programs/parmanode4" ]] ; then
 
     clear
 
     echo -e "\nParmanode4 seems to already be installed. Updating and exiting.\n"  #update parmanode if it exists...
 
     if which git >/dev/null ; then
-        if ! git config --global user.email ; then git config --global user.email sample@parmanode.com ; fi
-        if ! git config --global user.name ; then git config --global user.name Parman ; fi
+        if ! git config --global user.email ; then git config --global user.email sample@parmanode.com >$dn 2>&1 ; fi
+        if ! git config --global user.name ; then git config --global user.name Parman >$dn 2>&1 ; fi
         cd $HOME/parman_programs/parmanode4 && git config pull.rebase false && git pull >/dev/null 2>&1
     fi
 
@@ -501,6 +501,7 @@ function enable_mac_ssh_logins {
 if [[ $OS == "Mac" ]] ; then
 #enable ssh logins
 sudo systemsetup -setremotelogin on
+fi
 }
 
 function source_parmanode_services {
