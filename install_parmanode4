@@ -5,6 +5,22 @@
 #GLOBAL VARIABLES...
 export dn=/dev/null
 
+clear
+echo "debug (d) or not <enter>?"
+read choice </dev/tty
+case $choice in d) export debug="true" ; export count=0 ;; esac
+clear
+
+function stop {
+if [[ $debug == "true" ]] ; then
+echo ""
+echo "${FUNCNAME[1]} <-- ${FUNCNAME[2]}" 
+echo "${FUNCNAME[1]} at line ${BASH_LINENO[0]}"
+echo ""
+echo pause $count
+read pause </dev/tty
+export count="$((count + 1))"
+}
 
 #These temp directories are for installation only
 if [[ -d "/tmp" ]] ; then
