@@ -91,23 +91,25 @@ function yesornoinstallparmanode {
 clear
 printf "$orange
 ############################################################$blue
-                   P A R M A N O D E ${red}4$orange
+                   P A R M A N O D E ${green}4$orange
 ############################################################
 
 
-  Good call on installing Parmanode. This installation 
-  will add a few directories and files here and there, 
-  and also install some programs that are necessary for 
-  Parmanode to function. You will be asked to confirm 
-  on the next page.
+  Good call on installing Parmanode. 
+  
+  This installation will add a few directories and files 
+  here and there, and also install some programs that are 
+  necessary for Parmanode to function. 
+  
+  You will be asked to confirm on the next page.
 
-  If Parmanode${blue}3$orange is installed on your machine, Parmanode${red}4$orange
+  If Parmanode${cyan}3$orange is installed on your machine, Parmanode${green}4$orange
   will detect that, and any programs you have installed 
-  with it, and migrate them across.
+  with it, and migrate them across. 
     
-  Once that is done, Parmanode${red}4$orange will remove Parmanode${blue}3$orange
+  Once that is done, Parmanode${green}4$orange will remove Parmanode${cyan}3$orange
   for you. If you ever lose your mind and uninstall 
-  Parmanode${red}4$orange, it will leave your machine nice and clean.
+  Parmanode${green}4$orange, it will leave your machine nice and clean.
 
 
 ############################################################
@@ -429,7 +431,7 @@ function install_linux_packages {
 if [[ $(uname) == "Darwin" ]] ; then return 0 ; fi
 
 sudo apt-get update -y
-sudo apt-get install -y openssl openssh-server nginx-full python3 python3-pip socat vim nano ssh ip xauth || sww
+sudo apt-get install -y openssl openssh-server nginx-full python3 python3-pip socat vim nano ssh iproute2 xauth || sww
 sudo apt-get install -y net-tools git procps tmux x11-apps netcat-traditional jq || sww
 sudo apt-get install -y fcgiwrap unzip tor ufw mdadm e2fsprogs e2fsprogs fuse3 libfuse2 || sww
 sudo apt-get install -y clang cmake build-essential automake libtool pkg-config || sww
