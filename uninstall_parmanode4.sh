@@ -1,4 +1,6 @@
-function uninstall_parmanode4 {
+#!/bin/bash
+#accessed from parmanode.com with:
+# curl https://parmanode.com/uninstall_parmanode4 | bash
 
 #source files
 for file in $HOME/parman_programs/parmanode4/src/**/*.sh ; do
@@ -9,11 +11,11 @@ parmanode_variables
 test -d $HOME/parman_programs/parmanode4 || { echo -e "\nParmanode4 wasn't found.\n" ; sleep 1.5 ; exit ; }
 
 yesorno "Are you sure you want to uninstall Parmanode4? 
-    You will first have the option to remove installed programs" || return 1
+    You will first have the option to remove installed programs" || exit 1
 clear
 echo "Please wait..."
 
-#uninstall_apps || return 1
+#uninstall_apps || exit 1
 
 sudo rm -rf $HOME/.parmanode4
 sudo rm -rf $HOME/parman_programs/parmanode4
@@ -55,5 +57,4 @@ sudo rm /etc/systemd/system/multi-user.target.wants/parmanode.target
 
 echo -e "\n\nParmanode4 has been uninstalled\n\n"
 sleep 1.5
-return 0
-}
+exit 0

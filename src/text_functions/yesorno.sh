@@ -41,7 +41,7 @@ $cyan
     OR '${red}q$orange' to quit
 
 "
-read choice
+read choice </dev/tty
 case $choice in
 q|Q) exit ;; 
 "$y") return 0 ;;
