@@ -394,7 +394,7 @@ brew install nginx
 brew install fcgiwrap
 brew install autoconf automake fcgi libtool 
 brew install perl rust python
-brew install 
+brew install xauth
 #used for electrs
 if ! which clang >$dn 2>&1 ; then brew install --cask clay ; fi
 if [[ ! -e /Library/Developer/CommandLineTools ]] ; then
@@ -428,7 +428,7 @@ function install_linux_packages {
 if [[ $(uname) == "Darwin" ]] ; then return 0 ; fi
 
 sudo apt-get update -y
-sudo apt-get install -y openssl nginx-full python3 python3-pip socat vim nano ssh ip || sww
+sudo apt-get install -y openssl nginx-full python3 python3-pip socat vim nano ssh ip xauth || sww
 sudo apt-get install -y net-tools git procps tmux x11-apps netcat-traditional jq || sww
 sudo apt-get install -y fcgiwrap unzip tor ufw mdadm e2fsprogs e2fsprogs fuse3 libfuse2 || sww
 sudo apt-get install -y clang cmake build-essential automake libtool pkg-config || sww
