@@ -21,6 +21,8 @@ echo pause $count
 read pause </dev/tty
 case $pause in d) export debug="false"
 export count="$((count + 1))"
+;;
+esac
 }
 
 #These temp directories are for installation only
