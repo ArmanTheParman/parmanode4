@@ -8,18 +8,18 @@ export dn=/dev/null
 clear
 echo "debug (d) or not <enter>?"
 read choice </dev/tty
-case $choice in d) export debug="true" ; export count=0 ;; esac
+case $choice in d) export debug4="true" ; export count=0 ;; esac
 clear
 
 function stop {
-if [[ $debug == "true" ]] ; then
+if [[ $debug4 == "true" ]] ; then
 echo ""
 echo "${FUNCNAME[1]} <-- ${FUNCNAME[2]}" 
 echo "${FUNCNAME[1]} at line ${BASH_LINENO[0]}"
 echo ""
 echo pause $count
 read pause </dev/tty
-case $pause in d) export debug="false"
+case $pause in d) export debug4="false"
 count="$((count + 1))"
 export count
 ;;
@@ -310,7 +310,6 @@ source /etc/os-release
         ID=debian #for docker url
         parmanode_conf_add "ID=debian"
     elif [[ $ID == linuxmint ]] ; then 
-        debug "ID, 1.5, in linux mint. ID=$ID"
         ID=ubuntu
         parmanode_conf_add "ID=ubuntu"
     else
@@ -459,15 +458,12 @@ sudo apt-get install -y clang cmake build-essential automake libtool pkg-config 
 #sudo  apt-get install-y curl gnupg ca-certificates #installed with docker already
 which gsed >/dev/null 2>&1 || sudo ln -s $(which sed) /usr/bin/gsed 
 { pip3 install websockets 2>$dn || pip3 install websockets --break-system-packages ; } || sww
-stop
 cargo_check
-stop
 }
 
 function test_nginx {
 
-clear
-sudo nginx -t || { 
+sudo nginx -t >$dn 2>&1 || { 
     sww "Parmanode tested your Nginx configuration and it has failed. It's not clear
     why it failed, you can see if there is an error message above that might help. You need to
     fix that before Parmanode can be installed. Hit <enter> to exit." 
@@ -517,7 +513,6 @@ echo "{
     \"parmadrive\": {}
 }" | jq . | tee $tmp/parmanode_conf.json >$dn 2>&1
 mv $tmp/parmanode_conf.json $pj
-stop
 }
 
 function make_desktop_text {
@@ -580,7 +575,7 @@ cat<<EOS | sudo tee /etc/systemd/system/fcgiwrap.service.d/override.conf >$dn 2>
 User=$USER
 Group=$USER
 EOS
-sudo systemctl enable --now fcgiwrap
+sudo systemctl enable --now fcgiwrap >$dn 2>&1
 
 
 #Nginx
@@ -648,50 +643,26 @@ install_homebrew_packages #375
 install_linux_packages #441
 #test nginx - if there is a previous install and messed up configuration, it will break Parmanode4
 test_nginx
-  stop
 configure_git  #473
-  stop
 clone_parmanode #478
 source_parmanode_variables #483
-  stop
 parmanode_directories #429
 make_configs
-  stop
 make_desktop_text
 enable_mac_ssh_logins
 
 source_parmanode_services
     make_parmanode_service
-      stop
     make_background_bitcoin_download_service
-      echo "pause" ; read </dev/tty
-      stop
-    make_background_elects_download_service
-      echo "pause" ; read </dev/tty
-      stop
+    make_background_electrs_download_service
     make_background_electrum_download_service
-      echo "pause" ; read </dev/tty
-      stop
     make_socat_service
-      echo "pause" ; read </dev/tty
-      stop 
     make_javascript_server_service
-      echo "pause" ; read </dev/tty
-      stop
     make_electrs_service
-      echo "pause" ; read </dev/tty
-      stop
 install_parmaview #set up for Linux only at this stage
-      echo "pause" ; read </dev/tty
-      stop
 sudo systemctl start download_bitcoin_service >$dn 2>&1 
-      stop
+test_parmanode4_install
 }
-
-#migrate_from_parmanode3
-function test_parmanode4_install {
-
-unset tests_all_passed
 
 function swwtest {
 echo -e "Something went wrong \n$1\n\nHit <enter> to continue\n q to exit."
@@ -700,15 +671,12 @@ export tests_all_passed="false"
 case $choice in x|q) exit ;; esac
 }
 
-#source files
-for file in $HOME/parman_programs/parmanode4/src/**/*.sh ; do
-source $file
-done
-parmanode_variables
 
+function test_parmanode4_install {
+set -x
+unset tests_all_passed
 
-clear
-echo -e "Testing installation. Please wait..." ; sleep 1.5
+echo -e "\nTesting installation. Please wait..." ; sleep 0.5
 
 docker ps >$dn || { echo -e "\n    Docker not detected. Either it didn't install properly, or the
     the computer needs a little reboot. Hit <enter> to continue tests." ; read </dev/tty ; }
@@ -750,6 +718,7 @@ pip3 list | grep -q websockets || swwtest "websockets not detected in pip3 list"
 sudo test -f $parmaviewnginx || swwtest "parmaviewnginx file not detected"
 
 sudo systemctl status nginx >$dn 2>&1 || swwtest "nginx not running"
+sett +x
 return 0
 }
 ##############################################################################################################################
@@ -758,20 +727,12 @@ return 0
 
 which docker >/dev/null || export reboot="\r    Please reboot before using Parmanode.\n\n\n"
 
-do_install
-
-test_parmanode4_install
-
+do_install #and test
     if [[ $tests_all_passed != "false" ]] ; then
-        clear
         echo -e "\n\n\n\r    SUCCESS! \n\n\n$reboot"
-        sleep 1.5
     else
         echo -e "\n\n\n\r    Install finished, but at least one thing went wrong.\n\n\n"
-        sleep 3
     fi
 sudo rm -rf $tmp/* >/dev/null 2>&1
-
-exit
 
 ##############################################################################################################################
