@@ -9,9 +9,15 @@ done
 parmanode_variables
 
 test -d $HOME/parman_programs/parmanode4 || { echo -e "\nParmanode4 wasn't found.\n" ; sleep 1.5 ; exit ; }
+clear
+echo -e "    Are you sure you want to uninstall Parmanode4?\n    You will first have the option to remove installed programs.
 
-yesorno "Are you sure you want to uninstall Parmanode4? 
-    You will first have the option to remove installed programs" || exit 1
+        -r   y) yes, uninstall
+             n) no, exit this
+             " 
+read choice < /dev/tty 
+case $choice in y) true ;; *) exit ;; esac
+
 clear
 echo "Please wait..."
 
@@ -22,8 +28,10 @@ sudo rm -rf $HOME/parman_programs/parmanode4
 sudo test -L /usr/bin/gsed && sudo rm /usr/bin/gsed
 
 #uninstall_cgi
+    [[ -n $wwwparmaviewdir ]] && {
     sudo umount $wwwparmaviewdir 2>$dn && sudo rm -rf $wwwparmaviewdir 2>$dn
     sudo rm -rf $parmaviewnginx 2>$dn
+    }
 
     if [[ $(uname) == "Linux" ]] ; then 
         sudo rm -rf /etc/systemd/system/fcgiwrap.service.d 2>$dn
@@ -39,21 +47,22 @@ else
 gsed -i '/#ADDED by Parmanode4 ...start flag/,/#ADDED by Parmanode4 ...end flag/d' $HOME/.bashrc#unmount >$dn 2>&1
 fi
 
-#clearn up crontab
+#reminder to add code to clearn up crontab here
 
-sudo rm -rf $HOME/tmp_parmanode
+sudo rm -rf $HOME/tmp_parmanode >$dn 2>&1
 rm $HOME/Desktop/parmanode4_info.txt 2>$dn
 
 #stop connections
 tmux kill-session -t ws1 2>$dn
 
-
 #clean up parmanode.service
+[[ $(uname) == "Linux" ]] && {
 sudo systemctl stop parmanode.target 2>$dn
 sudo rm -rf /etc/systemd/system/parmanode.target
 sudo rm -rf /etc/systemd/system/parmanode.target.wants
 sudo rm -rf /etc/systemd/system/parmanode
 sudo rm /etc/systemd/system/multi-user.target.wants/parmanode.target 
+}
 
 echo -e "\n\nParmanode4 has been uninstalled\n\n"
 sleep 1.5
