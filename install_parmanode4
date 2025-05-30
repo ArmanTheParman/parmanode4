@@ -23,6 +23,7 @@ case $pause in d) export debug="false"
 export count="$((count + 1))"
 ;;
 esac
+fi
 }
 
 #These temp directories are for installation only
