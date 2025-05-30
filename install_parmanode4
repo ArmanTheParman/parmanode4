@@ -407,7 +407,6 @@ fi
 if [[ $(cargo --version | cut -d . -f 2) -lt 63 ]] ; then
 brew upgrade rust
 fi
-fi
 
 #build fastcgi
 if ! which fcgiwrap >/dev/null ; then
