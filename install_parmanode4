@@ -19,6 +19,7 @@ echo "${FUNCNAME[1]} at line ${BASH_LINENO[0]}"
 echo ""
 echo pause $count
 read pause </dev/tty
+case $pause in d) export debug="false"
 export count="$((count + 1))"
 }
 
@@ -454,7 +455,9 @@ sudo apt-get install -y clang cmake build-essential automake libtool pkg-config 
 #sudo  apt-get install-y curl gnupg ca-certificates #installed with docker already
 which gsed >/dev/null 2>&1 || sudo ln -s $(which sed) /usr/bin/gsed 
 { pip3 install websockets 2>$dn || pip3 install websockets --break-system-packages ; } || sww
+stop
 cargo_check
+stop
 }
 
 function test_nginx {
@@ -632,7 +635,7 @@ function do_install {
 
 
 
-check_architecture
+check_architecture 
 colours
 check_parmanode_exists
 yesornoinstallparmanode
@@ -642,25 +645,37 @@ install_homebrew_packages #375
 install_linux_packages #441
 #test nginx - if there is a previous install and messed up configuration, it will break Parmanode4
 test_nginx
+  stop
 configure_git  #473
+  stop
 clone_parmanode #478
 source_parmanode_variables #483
+  stop
 parmanode_directories #429
 make_configs
+  stop
 make_desktop_text
 enable_mac_ssh_logins
 
 source_parmanode_services
     make_parmanode_service
+      stop
     make_background_bitcoin_download_service
+      stop
     make_background_elects_download_service
+      stop
     make_background_electrum_download_service
+      stop
     make_socat_service
+      stop 
     make_javascript_server_service
+      stop
     make_electrs_service
-
+      stop
 install_parmaview #set up for Linux only at this stage
+      stop
 sudo systemctl start download_bitcoin_service >$dn 2>&1 
+      stop
 }
 
 #migrate_from_parmanode3
