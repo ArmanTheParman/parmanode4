@@ -12,9 +12,9 @@ test -d $HOME/parman_programs/parmanode4 || { echo -e "\nParmanode4 wasn't found
 clear
 echo -e "    Are you sure you want to uninstall Parmanode4?\n    You will first have the option to remove installed programs.
 
-        -r   y) yes, uninstall
-             n) no, exit this
-             " 
+        \r   y) yes, uninstall
+        \r     n) no, exit this
+" 
 read choice < /dev/tty 
 case $choice in y) true ;; *) exit ;; esac
 
