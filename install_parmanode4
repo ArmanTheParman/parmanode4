@@ -441,6 +441,18 @@ which gsed >/dev/null 2>&1 || sudo ln -s $(which sed) /usr/bin/gsed
 cargo_check
 }
 
+function test_nginx {
+
+clear
+sudo nginx -t || { 
+    sww "Parmanode tested your Nginx configuration and it has failed. It's not clear
+    why it failed, you can see if there is an error message above that might help. You need to
+    fix that before Parmanode can be installed. Hit <enter> to exit." 
+    exit
+    }
+
+}
+
 function  configure_git {
     if ! git config --global user.email ; then git config --global user.email parman@parmanode.com ; fi
     if ! git config --global user.name ; then git config --global user.name parmanode_user ; fi
@@ -612,6 +624,8 @@ check_docker #107
 install_homebrew #320
 install_homebrew_packages #375
 install_linux_packages #441
+#test nginx - if there is a previous install and messed up configuration, it will break Parmanode4
+test_nginx
 configure_git  #473
 clone_parmanode #478
 source_parmanode_variables #483
