@@ -20,7 +20,8 @@ echo ""
 echo pause $count
 read pause </dev/tty
 case $pause in d) export debug="false"
-export count="$((count + 1))"
+count="$((count + 1))"
+export count
 ;;
 esac
 fi
@@ -494,7 +495,7 @@ function parmanode_directories {
 #Check files and directories exist
 mkdir -p $HOME/parman_programs
 mkdir -p $HOME/parmanode4_apps/{bitcoin,bitcoinknots}
-mkdir -p $HOME/.parmanode4/{scripts,verification,logs,confg,errors,tmp/bitcoin,tmp/bitcoinknots,tmp/sparrow}
+mkdir -p $HOME/.parmanode4/{scripts,verification,logs,config,errors,tmp/bitcoin,tmp/bitcoinknots,tmp/sparrow}
 touch    $HOME/.parmanode4/installed.json
 touch    $HOME/.parmanode4/parmanode.json
 touch    $HOME/.parmanode4/parmanode.log
@@ -516,6 +517,7 @@ echo "{
     \"parmadrive\": {}
 }" | jq . | tee $tmp/parmanode_conf.json >$dn 2>&1
 mv $tmp/parmanode_conf.json $pj
+stop
 }
 
 function make_desktop_text {
@@ -529,8 +531,6 @@ http://parmanode4.local:58000
 
 Good idea to bookmark that address, then you can delete this text document.
 EOF
-
-echo "See new text document on Desktop."
 fi
 }
 
@@ -664,18 +664,25 @@ source_parmanode_services
     make_parmanode_service
       stop
     make_background_bitcoin_download_service
+      echo "pause" ; read </dev/tty
       stop
     make_background_elects_download_service
+      echo "pause" ; read </dev/tty
       stop
     make_background_electrum_download_service
+      echo "pause" ; read </dev/tty
       stop
     make_socat_service
+      echo "pause" ; read </dev/tty
       stop 
     make_javascript_server_service
+      echo "pause" ; read </dev/tty
       stop
     make_electrs_service
+      echo "pause" ; read </dev/tty
       stop
 install_parmaview #set up for Linux only at this stage
+      echo "pause" ; read </dev/tty
       stop
 sudo systemctl start download_bitcoin_service >$dn 2>&1 
       stop
