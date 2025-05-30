@@ -453,6 +453,7 @@ cd $HOME/parman_programs/parmanode4 && git config pull.rebase false >$dn 2>&1
 
 function source_parmanode_variables {
 source $HOME/parman_programs/parmanode4/src/config/parmanode_variables.sh >$dn 2>&1
+parmanode_variables
 }
 
 function parmanode_directories {
@@ -479,7 +480,7 @@ echo "{
     },
     \"installed\": {},
     \"parmadrive\": {}
-}" | jq . | tee $tmp/parmanode_conf.json  >$dn 2>&1
+}" | jq . | tee $tmp/parmanode_conf.json >$dn 2>&1
 mv $tmp/parmanode_conf.json $pj
 }
 
