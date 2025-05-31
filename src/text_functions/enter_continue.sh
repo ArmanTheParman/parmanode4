@@ -3,7 +3,7 @@ echo -en "$1\n"
 unset enter_cont
 
 echo -e "${yellow}Hit ${cyan}<enter>${yellow} to continue.$orange\n"  
-read enter_cont </dev/tty ; fi
+read enter_cont </dev/tty 
 export enter_cont
 
 case $enter_cont in
