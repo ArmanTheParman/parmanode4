@@ -542,6 +542,11 @@ function source_parmanode_services {
     done
 }
 
+function copy_scripts_2_dot_parmanode {
+cp $pn/scripts/* $dp/scripts/
+sudo chmod +x $dp/scripts/*
+}
+
 function cargo_check {
 if which cargo ; then
     source $HOME/.cargo/env 
@@ -658,6 +663,8 @@ source_parmanode_services
     make_background_electrum_download_service
     make_socat_service
     make_javascript_server_service
+    copy_scripts_2_dot_parmanode
+
 install_parmaview #set up for Linux only at this stage
 sudo systemctl start download_bitcoin_service >$dn 2>&1 
 test_parmanode4_install

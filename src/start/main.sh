@@ -11,8 +11,8 @@ debug_startup "Pause beggining of main"
 
 #source variables
 load_parmanode_variables $@ #check_architecture, add in function later
-source $pc
-source $ic
+source $pj
+source $ij
 
 
 

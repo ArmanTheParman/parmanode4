@@ -3,7 +3,7 @@ source $HOME/parman_programs/parmanode4/src/config/parmanode_variables.sh
 parmanode_variables
 export sparrowconf="$HOME/.sparrow/config"
 
-if jq '.parmanode' $pc | grep "sparrow_downloaded" $pj | grep -q true ; then exit ; fi
+if jq '.parmanode' $pj | grep "sparrow_downloaded" $pj | grep -q true ; then exit ; fi
 jq '.parmanode += {sparrow_download: started}' $pj >$pj.tmp && mv $pj.tmp $pj
 
 mkdir -p $HOME/.sparrow
@@ -134,9 +134,6 @@ if [[ $OS == "Linux" ]] ; then
     tar -xvf sparrow*.gz
     cd sparrow*
     mv ./* $hpa/sparrow/
-    if ! grep -q udev-end $ic ; then 
-        source $pn/src/other/udev ; udev 
-    fi
 elif [[ $OS == "Mac" ]] ; then 
     hdiutil attach $HOME/parmanode/Sparrow*
     sudo cp -r /Volumes/Sparrow/Sparrow.app /Applications
