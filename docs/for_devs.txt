@@ -1,0 +1,12 @@
+Languages:
+    Bash
+    Python
+    HTML/CSS/Javascript
+
+Readability:
+    Do see parmanode_variables.sh to understand shortcuts in code. Eg, $dn is /dev/null, or $hpa is $HOME/parmanode_apps
+
+Structure of program:
+    There is a Bash backend to manages the computer, installations and configuration files.
+    CGI scripts (via nginx, see rediretions in /etc/nginx/conf.d/) called by browser
+    Base index.html is modified using javascript. JS code loaded from parmanode diretory ($pn)
