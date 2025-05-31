@@ -17,6 +17,6 @@ Group=$USER
 WantedBy=parmanode.target         
 EOF
 
-sudo ln -s /etc/systemd/system/parmanode/electrs_install.service /etc/systemd/system/parmanode.target.wants/electrs_install.service >$dn 2>&1
+sudo ln -s /etc/systemd/system/parmanode/electrs_download.service /etc/systemd/system/parmanode.target.wants/electrs_download.service >$dn 2>&1
 sudo systemctl daemon-reload
 }

@@ -10,3 +10,4 @@ Structure of program:
     There is a Bash backend to manages the computer, installations and configuration files.
     CGI scripts (via nginx, see rediretions in /etc/nginx/conf.d/) called by browser
     Base index.html is modified using javascript. JS code loaded from parmanode diretory ($pn)
+    base.js is the "root" js file, loading other files in a modular way
