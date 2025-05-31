@@ -13,9 +13,9 @@ KillMode=process
 
 [Install]
 WantedBy=multi-user.target
-" | sudo tee /etc/systemd/system/parmanode/socat.service >$dn 2>&1
+" | sudo tee /etc/systemd/system/parmanode_socat.service >$dn 2>&1
 
-sudo ln -s /etc/systemd/system/parmanode/socat.service /etc/systemd/system/parmanode.target.wants/socat.service >$dn 2>&1
+sudo ln -s /etc/systemd/system/parmanode_socat.service /etc/systemd/system/parmanode.target.wants/parmanode_socat.service >$dn 2>&1
 sudo systemctl daemon-reload >$dn 2>&1
 sudo systemctl enable --now socat.service >$dn 2>&1
 }

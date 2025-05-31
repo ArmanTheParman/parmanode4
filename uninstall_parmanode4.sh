@@ -56,13 +56,11 @@ rm $HOME/Desktop/parmanode4_info.txt 2>$dn
 tmux kill-session -t ws1 2>$dn
 
 #clean up parmanode.service
-[[ $(uname) == "Linux" ]] && {
-sudo systemctl stop parmanode.target 2>$dn
-sudo rm -rf /etc/systemd/system/parmanode.target
-sudo rm -rf /etc/systemd/system/parmanode.target.wants
-sudo rm -rf /etc/systemd/system/parmanode
-sudo rm /etc/systemd/system/multi-user.target.wants/parmanode.target 
-}
+if [[ $(uname) == "Linux" ]]  ; then
+    ls /etc/systemd/system/parmanode* | while IFS= read x ; do
+        sudo rm -rf $x
+    done
+fi
 
 echo -e "\n\nParmanode4 has been uninstalled\n\n"
 sleep 1.5

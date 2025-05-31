@@ -14,8 +14,8 @@ Group=$USER
 
 [Install]
 WantedBy=multi-user.target         #parmanode.target if no autostart at boot
-" | sudo tee /etc/systemd/system/parmanode/pn4_js.service >$dn 2>&1
+" | sudo tee /etc/systemd/system/parmanode_js.service >$dn 2>&1
 
-sudo ln -s /etc/systemd/system/parmanode/pn4_js.service /etc/systemd/system/parmanode.target.wants/pn4_js.service >$dn 2>&1
+sudo ln -s /etc/systemd/system/parmanode_js.service /etc/systemd/system/parmanode.target.wants/parmanode_js.service >$dn 2>&1
 sudo systemctl daemon-reload
 }

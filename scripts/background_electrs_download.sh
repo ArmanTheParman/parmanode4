@@ -42,4 +42,6 @@ auth = "parman:parman"
 EOF
 gsed -i "s/CHANGETHIS/$HOME\/.electrs_db/" $HOME/.electrs/config.toml
 
+make_electrs_service
+
 jq 'del(.parmanode.electrs_download)' $pj >$pj.tmp && jq '.parmanode += {electrs_downloaded: true}' $pj.tmp >$pj && rm $pj.tmp

@@ -1,6 +1,6 @@
 function make_background_electrum_download_service {
 
-cat <<EOF | sudo tee /etc/systemd/system/parmanode/electrum_install.service >$dn 2>&1
+cat <<EOF | sudo tee /etc/systemd/system/parmanode_electrum_install.service >$dn 2>&1
 [Unit]
 Description=Download Electrum 
 After=network.target
@@ -15,6 +15,6 @@ Group=$USER
 WantedBy=parmanode.target         
 EOF
 
-sudo ln -s /etc/systemd/system/parmanode/electrum_install.service /etc/systemd/system/parmanode.target.wants/electrum_install.service >$dn 2>&1
+sudo ln -s /etc/systemd/system/parmanode_electrum_install.service /etc/systemd/system/parmanode.target.wants/parmanode_electrum_install.service >$dn 2>&1
 sudo systemctl daemon-reload
 }
