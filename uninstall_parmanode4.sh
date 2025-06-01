@@ -57,7 +57,7 @@ tmux kill-session -t ws1 2>$dn
 
 #clean up parmanode.service
 if [[ $(uname) == "Linux" ]]  ; then
-    ls /etc/systemd/system/parmanode* | while IFS= read x ; do
+    ls /etc/systemd/system/parmanode* >$dn 2>&1 | while IFS= read x ; do
         sudo rm -rf $x
     done
 fi
