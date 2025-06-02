@@ -11,7 +11,7 @@ parmanode_variables
 #the completed flag will signal to the frontend that the download is done
 #the service file is run once at the end of parmanode4 installation
 
-if jq '.parmanode' $pj | grep "bitcoin_downloaded" $pj | grep -q true ; then exit ; fi
+if jq '.parmanode' $pj | grep "bitcoin_downloaded" | grep -q "true" ; then exit ; fi
 jq '.parmanode += {bitcoin_download: started}' $pj >$pj.tmp && mv $pj.tmp $pj
 
 export knotsversion=28.1 

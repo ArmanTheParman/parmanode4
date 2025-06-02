@@ -11,7 +11,7 @@ export electrsversion="v0.10.9"
 mkdir -p $HOME/.electrs #for certificates and config file
 #make symlink for database directory later when user installs electrs. This is just background download and compile.
 
-if jq '.parmanode' $pj | grep "elects_downloaded" $pj | grep -q true ; then exit ; fi
+if jq '.parmanode' $pj | grep "elects_downloaded" | grep -q "true" ; then exit ; fi
 jq '.parmanode += {electrs_download: started}' $pj >$pj.tmp && mv $pj.tmp $pj
 
 cd $hpa && git clone --branch $electrsversion --single-branch https://github.com/romanz/electrs 
