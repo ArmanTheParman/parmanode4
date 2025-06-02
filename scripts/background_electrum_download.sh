@@ -3,7 +3,7 @@ source $HOME/parman_programs/parmanode4/src/config/parmanode_variables.sh
 parmanode_variables
 
 if jq '.parmanode' $pj | grep "electrum_downloaded" | grep -q "true" ; then exit ; fi
-jq '.parmanode += {electrum_download: started}' $pj >$pj.tmp && mv $pj.tmp $pj
+jq '.parmanode += {electrum_download: "started"}' $pj >$pj.tmp && mv $pj.tmp $pj
 
 mkdir -p $HOME/.electrum
 

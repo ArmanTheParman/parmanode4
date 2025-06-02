@@ -12,7 +12,7 @@ parmanode_variables
 #the service file is run once at the end of parmanode4 installation
 
 if jq '.parmanode' $pj | grep "bitcoin_downloaded" | grep -q "true" ; then exit ; fi
-jq '.parmanode += {bitcoin_download: started}' $pj >$pj.tmp && mv $pj.tmp $pj
+jq '.parmanode += {bitcoin_download: "started"}' $pj >$pj.tmp && mv $pj.tmp $pj
 
 export knotsversion=28.1 
 export deisversion=28.1

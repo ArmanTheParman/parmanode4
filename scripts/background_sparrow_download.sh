@@ -4,7 +4,7 @@ parmanode_variables
 export sparrowconf="$HOME/.sparrow/config"
 
 if jq '.parmanode' $pj | grep "sparrow_downloaded" | grep -q "true" ; then exit ; fi
-jq '.parmanode += {sparrow_download: started}' $pj >$pj.tmp && mv $pj.tmp $pj
+jq '.parmanode += {sparrow_download: “started"}' $pj >$pj.tmp && mv $pj.tmp $pj
 
 mkdir -p $HOME/.sparrow
 mkdir -p $hpa/sparrow
