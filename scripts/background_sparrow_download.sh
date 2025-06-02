@@ -1,4 +1,5 @@
 #!/bin/bash
+set +e
 source $HOME/parman_programs/parmanode4/src/config/parmanode_variables.sh
 parmanode_variables
 export sparrowconf="$HOME/.sparrow/config"
