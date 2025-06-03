@@ -16,70 +16,73 @@ if jq '.parmanode' $pj | grep "bitcoin_downloaded" | grep -q "true" ; then exit 
 jq '.parmanode += {bitcoin_download: "started"}' $pj >$pj.tmp && mv $pj.tmp $pj || true
 
 export knotsversion=28.1 
-export deisversion=28.1
 export knotsdate=20250305 
+export knotstag="v${knotsversion}.knots${knotsdate}"
 export knotsmajor=28.x
 export knotsextension="tar.gz"
+export deisversion=28.1
 export coreexternsion="tar.gz"
+export version=29.0 #bitcoin core
+export coretag="v$version"
+
+#download git repos
+rm -rf $hpa/{bitcoin_github,bitcoinknots_github} >$dn || true
+git clone https://github.com/bitcoin/bitcoin.git $hpa/core_github || true
+git clone https://github.com/bitcoinknots/bitcoin.git $hpa/knots_github || true
+cd $hp/core_github  ; git checkout $coretag
+cd $hp/knots_github ; git checkout $knotstag
+
+#download precombiled binaries
 tmp=$dp/tmp
 [[ $OS == "Mac" ]] && export knotsversion=28.1 && export knotsdate=20250305 && knotsmajor=28.x && knotsextension="zip" && coreexternsion="tar.gz"
 
 while true ; do
 
 	     if [[ $chip == "armv7l" || $chip == "armv8l" ]] ; then 		#32 bit Pi4
-                cd $tmp/bitcoinknots || true
                 curl -LO https://bitcoinknots.org/files/$knotsmajor/$knotsversion.knots$knotsdate/bitcoin-$knotsversion.knots$knotsdate-arm-linux-gnueabihf.$knotsextension 
-                cd $tmp/bitcoin || true
-		        curl -LO https://bitcoincore.org/bin/bitcoin-core-$version/bitcoin-$version-arm-linux-gnueabihf.tar.gz  
+  		          curl -LO https://bitcoincore.org/bin/bitcoin-core-$version/bitcoin-$version-arm-linux-gnueabihf.tar.gz  
                 break
          fi
 
 	     if [[ $chip == "aarch64" && $OS == "Linux" ]] ; then 				
 
             if [[ $( file /bin/bash | cut -d " " -f 3 ) == "64-bit" ]] ; then
-                cd $tmp/bitcoinknots  || true
                 curl -LO https://bitcoinknots.org/files/$knotsmajor/$knotsversion.knots$knotsdate/bitcoin-$knotsversion.knots$knotsdate-aarch64-linux-gnu.$knotsextension 
-                cd $tmp/bitcoin || true
                 curl -LO https://bitcoincore.org/bin/bitcoin-core-$version/bitcoin-$version-aarch64-linux-gnu.tar.gz 
                 break
             else #32 bit
-                cd $tmp/bitcoinknots || true
                 curl -LO https://bitcoinknots.org/files/$knotsmajor/$knottsversion.knots$knotsdate/bitcoin-$knotsversion.knots$knotsdate-arm-linux-gnueabihf.$knotsextension 
-                cd $tmp/bitcoin || true
                 curl -LO https://bitcoincore.org/bin/bitcoin-core-$version/bitcoin-$version-arm-linux-gnueabihf.tar.gz 
                 break
             fi
          fi
 
  	     if [[ $chip == "x86_64" && $OS == "Linux" ]] ; then 
-                cd $tmp/bitcoinknots || true
                 curl -LO https://bitcoinknots.org/files/$knotsmajor/$knotsversion.knots$knotsdate/bitcoin-$knotsversion.knots$knotsdate-x86_64-linux-gnu.$knotsextension
-                cd $tmp/bitcoin || true
-		        curl -LO https://bitcoincore.org/bin/bitcoin-core-$version/bitcoin-$version-x86_64-linux-gnu.tar.gz
+		          curl -LO https://bitcoincore.org/bin/bitcoin-core-$version/bitcoin-$version-x86_64-linux-gnu.tar.gz
                 break
          fi
 
          if [[ ($chip == "arm64" && $OS == "Mac") || ( $chip == "aarch64" && $OS == "Mac") ]] ; then
-            cd $tmp/bitcoinknots || true
             curl -LO https://bitcoinknots.org/files/$knotsmajor/$knotsversion.knots$knotsdate/bitcoin-$knotsversion.knots$knotsdate-arm64-apple-darwin.$knotsextension 
-            cd $tmp/bitcoin || true
             curl -LO https://bitcoincore.org/bin/bitcoin-core-$version/bitcoin-$version-arm64-apple-darwin.zip 
             break
          fi
 
          if [[ $chip == "x86_64" && $OS == "Mac" ]] ; then
-            cd $tmp/bitcoinknots || true
             curl -LO https://bitcoinknots.org/files/$knotsmajor/$knotsversion.knots$knotsdate/bitcoin-$knotsversion.knots$knotsdate-x86_64-apple-darwin.$knotsextension 
-            cd $tmp/bitcoin || true
             curl -LO https://bitcoincore.org/bin/bitcoin-core-$version/bitcoin-$version-x86_64-apple-darwin.zip 
             break
          fi
 done
 
-cd $tmp/bitcoinknots || true
+#order matters for wildcards
+mv *knots* ./knots/ || true ; mv *bitcoin* ./core/ || true
+
+cd $tmp/knots || true
 curl -LO https://bitcoinknots.org/files/$knotsmajor/$knotsversion.knots$knotsdate/SHA256SUMS 
 curl -LO https://bitcoinknots.org/files/$knotsmajor/$knotsversion.knots$knotsdate/SHA256SUMS.asc
-cd $tmp/bitcoin || true
+cd $tmp/core || true
 curl -LO https://bitcoincore.org/bin/bitcoin-core-$version/SHA256SUMS 
 curl -LO https://bitcoincore.org/bin/bitcoin-core-$version/SHA256SUMS.asc 
 
@@ -95,17 +98,21 @@ curl https://raw.githubusercontent.com/bitcoin-core/guix.sigs/main/builder-keys/
 
 gpg --verify --status-fd 1 SHA256SUMS.asc 2>&1 |& tee gpgresult | grep -iq GOOD && mv gpgresult gpgpassed  || true
 
-cd $tmp/bitcoin || true
+
+#handles zip or tar, as download filenames can change..
+cd $tmp/core || true
 if find $tmp/bitcoin/ -type f -name "*.zip" 2>$dn | grep -q . >$dn 2>&1 ; then #find returns true when found or not
 unzip bitcoin*.zip || true
+else
+mkdir -p ./tar ; tar -xf bitcoin-* -C ./tar/ || { rm -rf ./tar || true ; }
 fi
-mkdir -p ./tar ; tar -xf bitcoin-* -C ./tar/ || true
-git clone https://github.com/bitcoin/bitcoin.git bitcoin_github || true
 
-cd $tmp/bitcoinknots
+#handles zip or tar, as download filenames can change..
+cd $tmp/knots
 if find $tmp/bitcoinknots/ -type f -name "*.zip" 2>$dn | grep -q . >$dn 2>&1 ; then #find returns true when found or not
 unzip bitcoin*.zip || true
-mkdir -p ./tar ; tar -xf bitcoin-* -C ./tar/ || true
+else
+mkdir -p ./tar ; tar -xf bitcoin-* -C ./tar/ || { rm -rf ./tar || true ; }
 fi
-git clone https://github.com/bitcoinknots/bitcoin.git bitcoinknots_github || true
+
 jq 'del(.parmanode.bitcoin_download)' $pj >$pj.tmp && jq '.parmanode += {bitcoin_downloaded: true}' $pj.tmp >$pj && rm $pj.tmp || true

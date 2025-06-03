@@ -490,8 +490,8 @@ parmanode_variables
 function parmanode_directories {
 #Check files and directories exist
 mkdir -p $HOME/parman_programs
-mkdir -p $HOME/parmanode4_apps/{bitcoin,bitcoinknots}
-mkdir -p $HOME/.parmanode4/{scripts,verification,logs,config,errors,tmp/bitcoin,tmp/bitcoinknots,tmp/sparrow}
+mkdir -p $HOME/parmanode4_apps/{core,knots}
+mkdir -p $HOME/.parmanode4/{scripts,verification,logs,config,errors,tmp/core,tmp/knots,tmp/sparrow}
 touch    $HOME/.parmanode4/installed.json
 touch    $HOME/.parmanode4/parmanode.json
 touch    $HOME/.parmanode4/parmanode.log
