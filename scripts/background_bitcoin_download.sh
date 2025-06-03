@@ -34,7 +34,7 @@ cd $hp/knots_github ; git checkout $knotstag
 
 #download precombiled binaries
 [[ $OS == "Mac" ]] && export knotsversion=28.1 && export knotsdate=20250305 && knotsmajor=28.x && knotsextension="zip" && coreexternsion="tar.gz"
-
+cd $dp/tmp
 while true ; do
 
 	     if [[ $chip == "armv7l" || $chip == "armv8l" ]] ; then 		#32 bit Pi4
