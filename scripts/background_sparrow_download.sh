@@ -133,8 +133,7 @@ sudo gsed -i "/useProxy/c\\  \"useProxy\": false," $sparrowconf
 
 if [[ $OS == "Linux" ]] ; then
     tar -xvf sparrow*.gz
-    cd sparrow*
-    mv ./* $hpa/sparrow/
+    mv ./Sparrow $hpa/sparrow/
 elif [[ $OS == "Mac" ]] ; then 
     hdiutil attach $HOME/parmanode/Sparrow*
     sudo cp -r /Volumes/Sparrow/Sparrow.app /Applications
