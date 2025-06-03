@@ -104,6 +104,7 @@ if find $dp/tmp/core/ -type f -name "*.zip" 2>$dn | grep -q . >$dn 2>&1 ; then #
 unzip bitcoin*.zip || true
 else
 mkdir -p ./tar ; tar -xf bitcoin-* -C ./tar/ || { rm -rf ./tar || true ; }
+mv $dp/tmp/core/tar/bitcoin* $hpa/core
 fi
 
 #handles zip or tar, as download filenames can change..
@@ -112,6 +113,7 @@ if find $dp/tmp/knots/ -type f -name "*.zip" 2>$dn | grep -q . >$dn 2>&1 ; then 
 unzip bitcoin*.zip || true
 else
 mkdir -p ./tar ; tar -xf bitcoin-* -C ./tar/ || { rm -rf ./tar || true ; }
+mv $dp/tmp/knots/tar/bitcoin* $hpa/knots
 fi
 
 jq 'del(.parmanode.bitcoin_download)' $pj >$pj.tmp && jq '.parmanode += {bitcoin_downloaded: true}' $pj.tmp >$pj && rm $pj.tmp || true
