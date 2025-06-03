@@ -21,7 +21,7 @@ export knotsdate=20250305
 export knotsmajor=28.x
 export knotsextension="tar.gz"
 export coreexternsion="tar.gz"
-local tmp=$dp/tmp
+tmp=$dp/tmp
 [[ $OS == "Mac" ]] && export knotsversion=28.1 && export knotsdate=20250305 && knotsmajor=28.x && knotsextension="zip" && coreexternsion="tar.gz"
 
 while true ; do
