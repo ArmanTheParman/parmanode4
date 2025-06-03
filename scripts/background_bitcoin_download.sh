@@ -6,7 +6,7 @@ parmanode_variables
 #Executed by service file
 #Downloads Bitcoin Core and Knots precompiled files, verifies, unpacks, and also downloads github repos,
 #all ready to copy from hidden temp directory for the user once they make a selection - speeds things up.
-#tmp directory is set in parmaonde.conf, currently $HOME/.parmanmode/tmp
+
 
 #the config file contains flags to prevent re-downloading if already done
 #the completed flag will signal to the frontend that the download is done
@@ -33,7 +33,6 @@ cd $hp/core_github  ; git checkout $coretag
 cd $hp/knots_github ; git checkout $knotstag
 
 #download precombiled binaries
-tmp=$dp/tmp
 [[ $OS == "Mac" ]] && export knotsversion=28.1 && export knotsdate=20250305 && knotsmajor=28.x && knotsextension="zip" && coreexternsion="tar.gz"
 
 while true ; do
@@ -79,10 +78,10 @@ done
 #order matters for wildcards
 mv *knots* ./knots/ || true ; mv *bitcoin* ./core/ || true
 
-cd $tmp/knots || true
+cd $dp/tmp/knots || true
 curl -LO https://bitcoinknots.org/files/$knotsmajor/$knotsversion.knots$knotsdate/SHA256SUMS 
 curl -LO https://bitcoinknots.org/files/$knotsmajor/$knotsversion.knots$knotsdate/SHA256SUMS.asc
-cd $tmp/core || true
+cd $dp/tmp/core || true
 curl -LO https://bitcoincore.org/bin/bitcoin-core-$version/SHA256SUMS 
 curl -LO https://bitcoincore.org/bin/bitcoin-core-$version/SHA256SUMS.asc 
 
@@ -100,16 +99,16 @@ gpg --verify --status-fd 1 SHA256SUMS.asc 2>&1 |& tee gpgresult | grep -iq GOOD 
 
 
 #handles zip or tar, as download filenames can change..
-cd $tmp/core || true
-if find $tmp/bitcoin/ -type f -name "*.zip" 2>$dn | grep -q . >$dn 2>&1 ; then #find returns true when found or not
+cd $dp/tmp/core || true
+if find $dp/tmp/core/ -type f -name "*.zip" 2>$dn | grep -q . >$dn 2>&1 ; then #find returns true when found or not
 unzip bitcoin*.zip || true
 else
 mkdir -p ./tar ; tar -xf bitcoin-* -C ./tar/ || { rm -rf ./tar || true ; }
 fi
 
 #handles zip or tar, as download filenames can change..
-cd $tmp/knots
-if find $tmp/bitcoinknots/ -type f -name "*.zip" 2>$dn | grep -q . >$dn 2>&1 ; then #find returns true when found or not
+cd $dp/tmp/knots
+if find $dp/tmp/knots/ -type f -name "*.zip" 2>$dn | grep -q . >$dn 2>&1 ; then #find returns true when found or not
 unzip bitcoin*.zip || true
 else
 mkdir -p ./tar ; tar -xf bitcoin-* -C ./tar/ || { rm -rf ./tar || true ; }
