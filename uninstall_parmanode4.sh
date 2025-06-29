@@ -47,7 +47,7 @@ else
 gsed -i '/#ADDED by Parmanode4 ...start flag/,/#ADDED by Parmanode4 ...end flag/d' $HOME/.bashrc#unmount >$dn 2>&1
 fi
 
-#reminder to add code to clearn up crontab here
+#reminder to add code to clean up crontab here
 
 sudo rm -rf $HOME/tmp_parmanode >$dn 2>&1
 rm $HOME/Desktop/parmanode4_info.txt 2>$dn
