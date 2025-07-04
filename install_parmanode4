@@ -295,7 +295,7 @@ sudo apt-get install ca-certificates curl gnupg -y
 sudo install -m 0755 -d /etc/apt/keyrings
 curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --yes --dearmor -o /etc/apt/keyrings/docker.gpg
 sudo chmod a+r /etc/apt/keyrings/docker.gpg
-sudo apt-get update -y
+sudo apt-get update -y && export APT_UPDATE="true"
 
 source /etc/os-release 
 
@@ -325,7 +325,7 @@ if [[ $ID == "debian" ]] ; then
     sudo sed -i 's/ubuntu/debian/g' /etc/apt/sources.list.d/docker.list >> $dp/sed.log 2>&1
 fi
 
-sudo apt-get update -y
+sudo apt-get update -y && export APT_UPDATE="true"
 
 sudo apt-get install containerd.io docker-ce docker-ce-cli docker-buildx-plugin docker-compose-plugin docker-compose -y 
 
@@ -450,7 +450,7 @@ function install_linux_packages {
 
 if [[ $(uname) == "Darwin" ]] ; then return 0 ; fi
 
-sudo apt-get update -y
+sudo apt-get update -y && export APT_UPDATE="true"
 sudo apt-get install -y openssl openssh-server nginx-full python3 python3-pip socat vim nano ssh iproute2 xauth || sww
 sudo apt-get install -y net-tools git procps tmux x11-apps netcat-traditional jq || sww
 sudo apt-get install -y fcgiwrap unzip tor ufw mdadm e2fsprogs e2fsprogs fuse3 libfuse2 || sww
