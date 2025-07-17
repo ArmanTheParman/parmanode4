@@ -8,6 +8,13 @@ export enter_cont
 
 case $enter_cont in
 q) exit ;;
+tmux) tmux ;;
+debugon)
+export debug=1
+fi
+debugoff)
+export debug=0
+;;
 d)
     if [[ $debug == 1 ]] ; then export debug=0 ; fi
     if [[ $debug == 0 ]] ; then export debug=1 ; fi
