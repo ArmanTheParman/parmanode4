@@ -16,9 +16,9 @@ export function setMainDisplay() {
     mainMiddleBoxes[i].className = "parmabox";
     }
 
-    let mainMiddleBoxNames = [ "INSTALL<br>APPS", "USE<br>APPS", "REMOVE<br>APPS", 
-                                "PRODUCTS", "BITCOIN", "EDUCATION",
-                                "UPDATE", "OVERVIEW", "PREMIUM" ];
+    let mainMiddleBoxNames = [ "ParmanodL", "ParmaDrive", "ParmaNoNodL", 
+                                "ParmAirGap", "ParmAirGap<br>Zero", "Parmanode4Win",
+                                "DIY Build", "Mentorship", "ParmaVault" ];
 
     let mainMiddleBoxIDs = [ "installapps", "use", "remove", "products", "bitcoin",
                                "education", "update", "overview", "premium" ];
