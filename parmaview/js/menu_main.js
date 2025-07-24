@@ -16,12 +16,12 @@ export function setMainDisplay() {
     mainMiddleBoxes[i].className = "parmabox";
     }
 
-    let mainMiddleBoxNames = [ "ParmanodL", "ParmaDrive", "ParmaNoNodL", 
-                                "ParmAirGap", "ParmAirGap<br>Zero", "Parmanode4Win",
-                                "DIY Build", "Mentorship", "ParmaVault" ];
+    let mainMiddleBoxNames = [ "INSTALL<br>APPS", "USE<br>APPS", "REMOVE<br>APPS", 
+      "PRODUCTS", "BITCOIN", "EDUCATION",
+      "UPDATE", "OVERVIEW", "PREMIUM" ];
 
     let mainMiddleBoxIDs = [ "installapps", "use", "remove", "products", "bitcoin",
-                               "education", "update", "overview", "premium" ];
+     "education", "update", "overview", "premium" ];
 
     mainMiddleBoxes[4].style.color = "rgb(39, 236, 39)";
     mainMiddleBoxes[8].style.color = "rgb(11, 128, 255)";
