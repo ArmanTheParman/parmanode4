@@ -51,7 +51,7 @@ export function getBitcoinPrice() {
 }
 
 export function showPriceCycle(priceText) {
-  el = document.getElementById("price");
+  let el = document.getElementById("price");
 
   el.textContent = priceText;
 
