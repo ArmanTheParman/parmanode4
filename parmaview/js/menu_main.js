@@ -5,7 +5,7 @@ export function setMainDisplay() {
    
   // This function sets the main display of the Paramanode4 web interface
     document.getElementById("version").style.display = "block";
-    document.getElementById("heading").innerText = "PARMAMNODE4";
+    document.getElementById("heading").innerText = "PARMANODE4";
     document.getElementById("middle").innerHTML =  "";
     document.getElementById("footer").innerHTML =  "";
   // These are the parmaboxes that will live in the the 'middle' div, but could be used elsewhere
