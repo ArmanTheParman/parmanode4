@@ -28,6 +28,9 @@ echo "
 "
 xcode-select --install
 
-sudo sleep 0.1break
+sudo sleep 0.1
+
+#break not needed here because it will loop until it is installed
+
 done #ends loop 1
 }
